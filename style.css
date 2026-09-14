@@ -1,175 +1,144 @@
-/* RESET E VARIÁVEIS GOVERNAMENTAIS */
-:root {
-    --primary-color: #1a365d; /* Azul Institucional BR */
-    --secondary-color: #2b6cb0;
-    --accent-color: #2f855a; /* Verde Sucesso */
-    --warning-color: #c05621;
-    --danger-color: #9b2c2c;
-    --bg-light: #f7fafc;
-    --card-bg: #ffffff;
-    --text-main: #2d3748;
-    --text-muted: #718096;
-    --border-color: #e2e8f0;
-    --radius: 8px;
-    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+html, body {
+  height: 100%;
 }
 
 body {
-    background-color: var(--bg-light);
-    color: var(--text-main);
-    display: flex;
-    min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: #e9ebee;
+  padding: 24px;
 }
 
-/* LAYOUT PRINCIPAL RESPONSIVO */
-.app-container {
-    display: grid;
-    grid-template-columns: 260px 1fr;
-    width: 100%;
+.login-card {
+  width: 100%;
+  max-width: 360px;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  background: #0d1b2a;
 }
 
-@media (max-width: 992px) {
-    .app-container {
-        grid-template-columns: 1fr;
-    }
-    aside { display: none; } /* Oculta menu lateral em telas menores */
+.login-card__header {
+  position: relative;
+  padding: 32px 24px 60px;
+  text-align: center;
+  color: #fff;
+  background:
+    linear-gradient(180deg, rgba(6, 20, 41, 0.55) 0%, rgba(6, 20, 41, 0.75) 55%, rgba(6, 20, 41, 0.95) 100%),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.06) 0 6px, transparent 6px 26px),
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.05) 0 6px, transparent 6px 30px),
+    linear-gradient(160deg, #1b3a5c 0%, #142a44 45%, #0a1826 100%);
 }
 
-/* SIDEBAR E TOPBAR */
-aside {
-    background-color: var(--primary-color);
-    color: #ffffff;
-    padding: 2rem 1.5rem;
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
+.logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 6px;
 }
 
-aside h1 { font-size: 1.25rem; font-weight: 700; border-bottom: 2px solid var(--secondary-color); padding-bottom: 1rem; }
-aside nav ul { list-style: none; display: flex; flex-direction: column; gap: 0.75rem; }
-aside nav a { color: #e2e8f0; text-decoration: none; padding: 0.75rem 1rem; border-radius: var(--radius); display: block; transition: 0.2s; }
-aside nav a.active, aside nav a:hover { background-color: var(--secondary-color); color: #fff; }
-
-main {
-    padding: 2rem;
-    overflow-y: auto;
+.logo__icon {
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
 }
 
-header {
-    margin-bottom: 2rem;
-    border-bottom: 1px solid var(--border-color);
-    padding-bottom: 1rem;
+.logo__text {
+  font-size: 26px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: #fff;
 }
 
-/* GRID DE CONTEÚDO E CARDS */
-.dashboard-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 1.5rem;
+.login-card__subtitle {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  color: #f2f4f7;
 }
 
-.card {
-    background: var(--card-bg);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius);
-    padding: 1.5rem;
-    box-shadow: var(--shadow);
+.login-card__body {
+  position: relative;
+  margin-top: -40px;
+  padding: 0 24px 28px;
 }
 
-.card h3 {
-    color: var(--primary-color);
-    margin-bottom: 1rem;
-    font-size: 1.1rem;
-    border-bottom: 1px solid var(--border-color);
-    padding-bottom: 0.5rem;
+.field {
+  margin-bottom: 14px;
 }
 
-/* FORMULÁRIOS, BOTÕES E COMPONENTES DE UI */
-.form-group {
-    margin-bottom: 1rem;
+.field label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 6px;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
 }
 
-.form-group label {
-    display: block;
-    margin-bottom: 0.5rem;
-    font-size: 0.9rem;
-    font-weight: 600;
+.field input {
+  width: 100%;
+  height: 38px;
+  padding: 0 12px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  font-size: 14px;
+  outline: none;
+  transition: background 0.2s, border-color 0.2s;
 }
 
-.form-control, select, textarea {
-    width: 100%;
-    padding: 0.75rem;
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius);
-    background-color: #fff;
-    color: var(--text-main);
+.field input::placeholder {
+  color: rgba(255, 255, 255, 0.6);
 }
 
-.btn {
-    background-color: var(--secondary-color);
-    color: white;
-    border: none;
-    padding: 0.75rem 1.5rem;
-    border-radius: var(--radius);
-    cursor: pointer;
-    font-weight: 600;
-    transition: background 0.2s;
+.field input:focus {
+  background: rgba(255, 255, 255, 0.22);
+  border-color: #fff;
 }
 
-.btn:hover { background-color: var(--primary-color); }
-.btn-success { background-color: var(--accent-color); }
-.btn-danger { background-color: var(--danger-color); }
-
-/* TABELAS E COMPONENTES ESPECÍFICOS */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 1rem;
+.login-card__actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 22px;
 }
 
-th, td {
-    padding: 0.75rem;
-    border-bottom: 1px solid var(--border-color);
-    text-align: left;
+.btn-entrar {
+  min-width: 140px;
+  height: 38px;
+  border: none;
+  border-radius: 6px;
+  background: linear-gradient(180deg, #b9bec5 0%, #8d949c 100%);
+  color: #1f2933;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  transition: filter 0.15s, transform 0.1s;
 }
 
-th { background-color: #edf2f7; color: var(--primary-color); }
-
-.badge {
-    padding: 0.25rem 0.5rem;
-    border-radius: 4px;
-    font-size: 0.8rem;
-    font-weight: bold;
-}
-.badge-success { background: #c6f6d5; color: #22543d; }
-.badge-warning { background: #feebc8; color: #744210; }
-
-/* BARRA DE PROGRESSO */
-.progress-bar-container {
-    background: #edf2f7;
-    border-radius: 10px;
-    height: 12px;
-    width: 100%;
-    margin-top: 0.5rem;
-    overflow: hidden;
-}
-.progress-bar {
-    background: var(--accent-color);
-    height: 100%;
+.btn-entrar:hover {
+  filter: brightness(1.05);
 }
 
-/* ÁRVORES E ESTRUTURAS */
-.tree-node {
-    margin-left: 1.5rem;
-    border-left: 2px dashed var(--border-color);
-    padding-left: 1rem;
-    position: relative;
-    margin-top: 0.5rem;
+.btn-entrar:active {
+  transform: translateY(1px);
+}
+
+@media (max-width: 420px) {
+  .login-card {
+    max-width: 100%;
+  }
 }
