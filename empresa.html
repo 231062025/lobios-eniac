@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel do Gestor - Diretoria Executiva</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Menu -->
+        <aside>
+            <h1>SisGov - Gestão</h1>
+            <nav>
+                <ul>
+                    <li><a href="#" class="active">Equipe & Desempenho</a></li>
+                    <li><a href="#">Validações de Escalas</a></li>
+                    <li><a href="#">Feedbacks e Atas</a></li>
+                    <li><a href="#">Organograma</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Área Principal de Conteúdo -->
+        <main>
+            <header>
+                <h2>Painel da Diretoria Administrativa</h2>
+                <p>Gestor Responsável: Diretor Marcos Antônio</p>
+            </header>
+
+            <div class="dashboard-grid">
+                <!-- 1. Avaliar equipe usando 3 métricas distintas -->
+                <div class="card" style="grid-column: span 2;">
+                    <h3>Métricas de Avaliação de Desempenho da Equipe</h3>
+                    <div class="form-group" style="max-width: 300px;">
+                        <label for="metric-select"><strong>Selecione a Métrica Analítica:</strong></label>
+                        <select id="metric-select">
+                            <option value="projetos">Projetos Entregues (%)</option>
+                            <option value="horas">Horas Trabalhadas (Banco de Horas)</option>
+                            <option value="chamados">Chamados Resolvidos (Suporte/Processos)</option>
+                        </select>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Servidor</th>
+                                <th>Indicador Atual</th>
+                                <th>Meta Estipulada</th>
+                                <th>Progresso Relativo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Mariana Costa (Analista)</td>
+                                <td>14 Projetos</td>
+                                <td>15 Projetos</td>
+                                <td>
+                                    <div class="progress-bar-container"><div class="progress-bar" style="width: 93%;"></div></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Carlos Souza (Técnico)</td>
+                                <td>8 Projetos</td>
+                                <td>12 Projetos</td>
+                                <td>
+                                    <div class="progress-bar-container"><div class="progress-bar" style="width: 66%; background: var(--warning-color);"></div></div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- 2. Aprovar/rejeitar solicitações de férias e pontos pendentes -->
+                <div class="card">
+                    <h3>Aprovações Pendentes</h3>
+                    <div style="display: flex; flex-direction: column; gap: 1rem; margin-top: 1rem;">
+                        <div style="border: 1px solid var(--border-color); padding: 0.75rem; border-radius: var(--radius);">
+                            <p><strong>Férias:</strong> Mariana Costa</p>
+                            <small style="color: var(--text-muted);">Período solicitado: 15 dias em Dezembro.</small>
+                            <div style="margin-top: 0.5rem; display: flex; gap: 0.25rem;">
+                                <button class="btn btn-success" style="padding: 0.4rem 0.8rem; font-size: 0.85rem;">Homologar</button>
+                                <button class="btn btn-danger" style="padding: 0.4rem 0.8rem; font-size: 0.85rem;">Indeferir</button>
+                            </div>
+                        </div>
+                        <div style="border: 1px solid var(--border-color); padding: 0.75rem; border-radius: var(--radius);">
+                            <p><strong>Ajuste de Ponto:</strong> Carlos Souza</p>
+                            <small style="color: var(--text-muted);">Esquecimento de registro de saída (Atestado anexo).</small>
+                            <div style="margin-top: 0.5rem; display: flex; gap: 0.25rem;">
+                                <button class="btn btn-success" style="padding: 0.4rem 0.8rem; font-size: 0.85rem;">Validar</button>
+                                <button class="btn btn-danger" style="padding: 0.4rem 0.8rem; font-size: 0.85rem;">Recusar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. Dar feedback contínuo com opção de anexar documentos/metas -->
+                <div class="card">
+                    <h3>Feedback e Alinhamento</h3>
+                    <form action="#">
+                        <div class="form-group">
+                            <label for="subordinado">Subordinado Alvo:</label>
+                            <select id="subordinado">
+                                <option>Mariana Costa</option>
+                                <option>Carlos Souza</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="feedback-text">Parecer de Orientação:</label>
+                            <textarea id="feedback-text" rows="3" placeholder="Insira o feedback construtivo ou metas para correção de desvios operacionais..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="anexo-plano">Anexar Caderno de Metas Adicionais (PDF):</label>
+                            <input type="file" id="anexo-plano" class="form-control">
+                        </div>
+                        <button type="submit" class="btn" style="width: 100%;">Registrar Registro Base</button>
+                    </form>
+                </div>
+
+                <!-- 4. Visualizar a árvore da Estrutura Governamental da sua diretoria -->
+                <div class="card" style="grid-column: span 3;">
+                    <h3>Estrutura Organizacional Hierárquica da Diretoria</h3>
+                    <div style="background-color: var(--bg-light); padding: 1rem; border-radius: var(--radius);">
+                        <strong>Diretoria Administrativa (Marcos Antônio)</strong>
+                        <div class="tree-node">
+                            <strong>Coordenação de Infraestrutura (Lúcia Ramos)</strong>
+                            <div class="tree-node">Setor de Logística (Operacional - 4 servidores)</div>
+                            <div class="tree-node">Setor de Manutenção Patrimonial (Técnico - 3 servidores)</div>
+                        </div>
+                        <div class="tree-node">
+                            <strong>Coordenação de Suporte Técnico (Roberto Dias)</strong>
+                            <div class="tree-node">Núcleo de Atendimento ao Cidadão (6 servidores)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>
+
+
+
+

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal do Funcionário - Gestão Governamental</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Menu de Navegação -->
+        <aside>
+            <h1>SisGov - Servidor</h1>
+            <nav>
+                <ul>
+                    <li><a href="#" class="active">Painel Principal</a></li>
+                    <li><a href="#">Minhas Férias</a></li>
+                    <li><a href="#">Capacitações</a></li>
+                    <li><a href="#">Registro de Ponto</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Área Principal de Conteúdo -->
+        <main>
+            <header>
+                <h2>Bem-vindo, Servidor João Silva</h2>
+                <p>Secretaria de Planejamento e Gestão Urbana</p>
+            </header>
+
+            <div class="dashboard-grid">
+                <!-- 1. Dashboard de Metas Pessoais e Plano de Carreira -->
+                <div class="card">
+                    <h3>Metas Pessoais & Carreira</h3>
+                    <p><strong>Cargo Atual:</strong> Analista Técnico - Nível II</p>
+                    <div class="form-group" style="margin-top: 1rem;">
+                        <label>Meta Trimestral: Conclusão de Relatórios de Impacto Ambiental</label>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar" style="width: 75%;"></div>
+                        </div>
+                        <small style="color: var(--text-muted);">75% Concluído (Prazo: 30 dias)</small>
+                    </div>
+                    <div class="form-group">
+                        <label>Próxima Progressão Funcional (Nível III)</label>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar" style="width: 40%; background: var(--secondary-color);"></div>
+                        </div>
+                        <small style="color: var(--text-muted);">Faltam 12 meses de interstício e 1 curso de extensão.</small>
+                    </div>
+                </div>
+
+                <!-- 2. Aba de solicitações de Férias -->
+                <div class="card">
+                    <h3>Solicitação de Férias</h3>
+                    <p style="margin-bottom: 1rem;"><strong>Saldo Disponível:</strong> <span class="badge badge-success">22 Dias</span></p>
+                    <form action="#" method="POST" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <label for="dias-ferias">Dias a Usufruir:</label>
+                            <input type="number" id="dias-ferias" class="form-control" max="22" min="5" placeholder="Ex: 15">
+                        </div>
+                        <div class="form-group">
+                            <label for="comprovante">Anexar Comprovante de Escala:</label>
+                            <input type="file" id="comprovante" class="form-control">
+                        </div>
+                        <button type="submit" class="btn">Solicitar Gozo de Férias</button>
+                    </form>
+                </div>
+
+                <!-- 3. Painel de Treinamentos recomendados -->
+                <div class="card">
+                    <h3>Treinamentos Recomendados</h3>
+                    <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1rem;">Indicações geradas de acordo com as lacunas da sua última Avaliação de Desempenho.</p>
+                    <table style="font-size: 0.9rem;">
+                        <thead>
+                            <tr>
+                                <th>Curso</th>
+                                <th>Carga Horária</th>
+                                <th>Ação</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Gestão de Contratos Públicos</td>
+                                <td>40h</td>
+                                <td><button class="btn btn-success" style="padding: 0.25rem 0.5rem; font-size: 0.8rem;">Matricular</button></td>
+                            </tr>
+                            <tr>
+                                <td>Análise de Dados com Python</td>
+                                <td>60h</td>
+                                <td><button class="btn btn-success" style="padding: 0.25rem 0.5rem; font-size: 0.8rem;">Matricular</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- 4. Controle de ponto com upload de atestados -->
+                <div class="card">
+                    <h3>Controle de Ponto Coletivo</h3>
+                    <p>Status de Hoje: <span class="badge badge-success">Ponto Batido</span></p>
+                    <div style="margin: 1rem 0; display: flex; gap: 0.5rem;">
+                        <button class="btn" style="flex: 1;">Registrar Entrada</button>
+                        <button class="btn btn-danger" style="flex: 1;">Registrar Saída</button>
+                    </div>
+                    <div style="border-top: 1px solid var(--border-color); padding-top: 1rem;">
+                        <label style="font-weight: 600; font-size: 0.9rem; display: block; margin-bottom: 0.5rem;">Justificar Ausência / Enviar Atestado:</label>
+                        <input type="file" class="form-control" style="margin-bottom: 0.5rem;">
+                        <button class="btn style-muted" style="width: 100%; background-color: var(--text-muted);">Enviar Documento Médico</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>
+
+
+

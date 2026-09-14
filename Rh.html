@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Geral de Recursos Humanos - Capital Humano</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Menu -->
+        <aside>
+            <h1>SisGov - RH Central</h1>
+            <nav>
+                <ul>
+                    <li><a href="#" class="active">Estrutura de Cargos</a></li>
+                    <li><a href="#">Matriz de Competências</a></li>
+                    <li><a href="#">Alertas Legais</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Área Principal de Conteúdo -->
+        <main>
+            <header>
+                <h2>Supervisão Estratégica de Recursos Humanos</h2>
+                <p>Governo do Estado - Secretaria de Administração</p>
+            </header>
+
+            <div class="dashboard-grid">
+                <!-- 1. Visão global e edição da Estrutura Governamental -->
+                <div class="card" style="grid-column: span 2;">
+                    <h3>Edição Global de Setores, Cargos e Responsáveis</h3>
+                    <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1rem;">Gerencie os nós organizacionais e vincule os ordenadores de despesas e chefias de setores.</p>
+                    <table style="font-size: 0.9rem;">
+                        <thead>
+                            <tr>
+                                <th>Setor Estratégico</th>
+                                <th>Cargo de Chefia</th>
+                                <th>Servidor Responsável</th>
+                                <th>Ações de Remanejamento</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Gabinete de Governança Digital</td>
+                                <td>Secretário Adjunto</td>
+                                <td>Dr. Alberto Malta</td>
+                                <td>
+                                    <button class="btn" style="padding: 0.25rem 0.5rem; font-size: 0.8rem;">Editar Vínculo</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Coordenadoria de Auditoria Interna</td>
+                                <td>Auditor Geral Titular</td>
+                                <td>Dra. Heloísa Pires</td>
+                                <td>
+                                    <button class="btn" style="padding: 0.25rem 0.5rem; font-size: 0.8rem;">Editar Vínculo</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <button class="btn btn-success" style="margin-top: 1rem;">+ Cadastrar Novo Setor Estatutário</button>
+                </div>
+
+                <!-- 3. Painel de Notificações automatizadas para lembretes de férias vencidas -->
+                <div class="card">
+                    <h3>Alertas de Passivos (Férias Vencidas)</h3>
+                    <div style="background: #fff5f5; border-left: 4px solid var(--danger-color); padding: 0.75rem; border-radius: var(--radius); margin-bottom: 0.75rem;">
+                        <p style="font-weight: bold; color: var(--danger-color); font-size: 0.9rem;">Risco de Notificação de Multa</p>
+                        <p style="font-size: 0.85rem;"><strong>Servidor:</strong> Fernando Mendes (Matrícula #9482)</p>
+                        <p style="font-size: 0.85rem; color: var(--text-muted);">2 Períodos de férias acumulados. Notificação enviada à chefia imediata.</p>
+                    </div>
+                    <div style="background: #fffaf0; border-left: 4px solid var(--warning-color); padding: 0.75rem; border-radius: var(--radius);">
+                        <p style="font-weight: bold; color: var(--warning-color); font-size: 0.9rem;">Alerta Prévio Preventivo</p>
+                        <p style="font-size: 0.85rem;"><strong>Servidora:</strong> Cláudia Regina (Matrícula #3812)</p>
+                        <p style="font-size: 0.85rem; color: var(--text-muted);">Período concessivo vence em 60 dias. Sugerida inclusão na escala emergencial.</p>
+                    </div>
+                </div>
+
+                <!-- 2. Configuração dos critérios de Avaliação de Desempenho e Matriz de Treinamentos -->
+                <div class="card" style="grid-column: span 3;">
+                    <h3>Vínculos de Desempenho & Matriz Crítica de Treinamentos</h3>
+                    <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1rem;">Defina quais cursos públicos serão oferecidos compulsoriamente como ação corretiva para insuficiências registradas em avaliações de desempenho.</p>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem;">
+                        <div style="border: 1px solid var(--border-color); padding: 1rem; border-radius: var(--radius);">
+                            <h5>Métrica: Baixo Rendimento em Orçamento Público</h5>
+                            <hr style="margin: 0.5rem 0; border: none; border-top: 1px solid var(--border-color);">
+                            <p style="font-size: 0.85rem; margin-bottom: 0.5rem;"><strong>Curso Automatizado Vinculado:</strong></p>
+                            <span class="badge badge-warning">Planejamento e Execução Orçamentária no SIAFI (Exclusivo Enap)</span>
+                        </div>
+                        <div style="border: 1px solid var(--border-color); padding: 1rem; border-radius: var(--radius);">
+                            <h5>Métrica: Pontuação Crítica em Atendimento ao Usuário</h5>
+                            <hr style="margin: 0.5rem 0; border: none; border-top: 1px solid var(--border-color);">
+                            <p style="font-size: 0.85rem; margin-bottom: 0.5rem;"><strong>Curso Automatizado Vinculado:</strong></p>
+                            <span class="badge badge-warning">Ouvidoria Pública e Resolução Conflituosa de Interesses</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
