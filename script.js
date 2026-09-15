@@ -18,10 +18,9 @@ function Validador(event) {
         window.location.href = "rh.html";
       } else if (usuario.perfil === "gestor") {
         window.location.href = "gestor.html";
-      } else {
-        // CORREÇÃO: Usar barra normal (/) para caminhos de URL
-        window.location.href = "lobiosN2/funcionario.html";
-      }
+     } else {
+  window.location.href = "funcionario.html";
+}
     } else {
       alert("Login ou senha inválidos");
     }
