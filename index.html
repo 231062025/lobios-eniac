@@ -6,7 +6,150 @@
 <title>Lobios | Gestão em RH</title>
 <script src="script.js"> </script>
 <link rel="icon" type="image/x-icon" href="assets/images/icon.png ">
-<link rel="stylesheet" href="style.css">
+<style>* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: #e9ebee;
+  padding: 24px;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 360px;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  background: #0d1b2a;
+}
+
+.login-card__header {
+  position: relative;
+  padding: 32px 24px 60px;
+  text-align: center;
+  color: #fff;
+  background:
+    linear-gradient(180deg, rgba(6, 20, 41, 0.55) 0%, rgba(6, 20, 41, 0.75) 55%, rgba(6, 20, 41, 0.95) 100%),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.06) 0 6px, transparent 6px 26px),
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.05) 0 6px, transparent 6px 30px),
+    linear-gradient(160deg, #1b3a5c 0%, #142a44 45%, #0a1826 100%);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.logo__icon {
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+}
+
+.logo__text {
+  font-size: 26px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: #fff;
+}
+
+.login-card__subtitle {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  color: #f2f4f7;
+}
+
+.login-card__body {
+  position: relative;
+  margin-top: -40px;
+  padding: 0 24px 28px;
+}
+
+.field {
+  margin-bottom: 14px;
+}
+
+.field label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 6px;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+}
+
+.field input {
+  width: 100%;
+  height: 38px;
+  padding: 0 12px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  font-size: 14px;
+  outline: none;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.field input::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.field input:focus {
+  background: rgba(255, 255, 255, 0.22);
+  border-color: #fff;
+}
+
+.login-card__actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 22px;
+}
+
+.btn-entrar {
+  min-width: 140px;
+  height: 38px;
+  border: none;
+  border-radius: 6px;
+  background: linear-gradient(180deg, #b9bec5 0%, #8d949c 100%);
+  color: #1f2933;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  transition: filter 0.15s, transform 0.1s;
+}
+
+.btn-entrar:hover {
+  filter: brightness(1.05);
+}
+
+.btn-entrar:active {
+  transform: translateY(1px);
+}
+
+@media (max-width: 420px) {
+  .login-card {
+    max-width: 100%;
+  }
+}</style>
 </head>
 <body>
 
