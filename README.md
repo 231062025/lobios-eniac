@@ -143,7 +143,7 @@ lobios-eniac/
 |---|---|
 | 🗄️ Banco de dados | Davi |
 | 🔌 API | Jackson |
-| 💻 Front-end | _a definir_ |
+| 💻 Front-end | Samuel e Tárcio |
 | 📋 Proponente do desafio | Aline Lopes Ruiz — Lobios |
 
 ---
