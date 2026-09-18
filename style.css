@@ -1,8 +1,7 @@
-/* RESET E VARIÁVEIS GOVERNAMENTAIS */
 :root {
-    --primary-color: #1a365d; /* Azul Institucional BR */
+    --primary-color: #1a365d; 
     --secondary-color: #2b6cb0;
-    --accent-color: #2f855a; /* Verde Sucesso */
+    --accent-color: #2f855a;
     --warning-color: #c05621;
     --danger-color: #9b2c2c;
     --bg-light: #f7fafc;
@@ -28,7 +27,6 @@ body {
     min-height: 100vh;
 }
 
-/* LAYOUT PRINCIPAL RESPONSIVO */
 .app-container {
     display: grid;
     grid-template-columns: 260px 1fr;
@@ -39,10 +37,9 @@ body {
     .app-container {
         grid-template-columns: 1fr;
     }
-    aside { display: none; } /* Oculta menu lateral em telas menores */
+    aside { display: none; }
 }
 
-/* SIDEBAR E TOPBAR */
 aside {
     background-color: var(--primary-color);
     color: #ffffff;
@@ -68,7 +65,6 @@ header {
     padding-bottom: 1rem;
 }
 
-/* GRID DE CONTEÚDO E CARDS */
 .dashboard-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -91,7 +87,6 @@ header {
     padding-bottom: 0.5rem;
 }
 
-/* FORMULÁRIOS, BOTÕES E COMPONENTES DE UI */
 .form-group {
     margin-bottom: 1rem;
 }
@@ -127,7 +122,6 @@ header {
 .btn-success { background-color: var(--accent-color); }
 .btn-danger { background-color: var(--danger-color); }
 
-/* TABELAS E COMPONENTES ESPECÍFICOS */
 table {
     width: 100%;
     border-collapse: collapse;
@@ -151,7 +145,6 @@ th { background-color: #edf2f7; color: var(--primary-color); }
 .badge-success { background: #c6f6d5; color: #22543d; }
 .badge-warning { background: #feebc8; color: #744210; }
 
-/* BARRA DE PROGRESSO */
 .progress-bar-container {
     background: #edf2f7;
     border-radius: 10px;
@@ -165,7 +158,6 @@ th { background-color: #edf2f7; color: var(--primary-color); }
     height: 100%;
 }
 
-/* ÁRVORES E ESTRUTURAS */
 .tree-node {
     margin-left: 1.5rem;
     border-left: 2px dashed var(--border-color);
