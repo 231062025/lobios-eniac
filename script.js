@@ -1,5 +1,4 @@
 function Validador(event) {
-  // Evita que a página recarregue se a função for chamada dentro de um <form>
   if (event) event.preventDefault();
 
   const login = document.getElementById('login').value;
