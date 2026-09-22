@@ -16,7 +16,7 @@ app.add_middleware(
 # ==========================================
 # CONFIGURAÇÃO DO BANCO DE DADOS (Supabase / PostgreSQL)
 # ==========================================
-SQLALCHEMY_DATABASE_URL = "postgresql://postgres.ocdyqvuufmgkcnbtopbn:Lobios-eniac@aws-0-us-east-1.pooler.supabase.com:6543/postgres"
+SQLALCHEMY_DATABASE_URL= "postgresql://postgres.ocdyqvuufmgkcnbtopbn:lobios2026eniac@aws-0-us-east-1.pooler.supabase.com:6543/postgres"
 
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)

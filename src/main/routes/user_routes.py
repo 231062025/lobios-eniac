@@ -2,7 +2,8 @@ from typing import List
 from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import ConfigDict
 from sqlalchemy.orm import Session
-import uuid
+from pydantic import BaseModel, ConfigDict
+from uuid import UUID
 
 from src.main.validators.user_register_validator import UserRegisterValidator
 from src.main.server import server
@@ -11,8 +12,12 @@ from src.main.models.models import UserDB
 users_routes = APIRouter(tags=["Usuario"])
 
 # Pydantic Response Model (Herda do validador e adiciona o id como string/uuid)
-class UserResponse(UserRegisterValidator):
-    id: str  # O Supabase usa UUID, que tratamos como string no Pydantic/JSON
+class UserResponse(BaseModel): # Mude para herdar de BaseModel diretamente
+    id: UUID                   # Use UUID diretamente em vez de str
+    nome: str
+    email: str
+    # Não coloque 'username' aqui se ele não existe na tabela do banco
+    
     model_config = ConfigDict(from_attributes=True)
 
 # [C]REATE - Criar e salvar novo usuário
@@ -58,7 +63,7 @@ def update_user(user_id: str, user_atualizado: UserRegisterValidator, db: Sessio
     UserDB.email = user_atualizado.email
     
     db.commit()
-    db.refresh(UserDB)
+    db.refresh(user_db)
     return user_db
 
 # [D]ELETE - Deletar um usuário (Corrigido o status__code para status_code)
