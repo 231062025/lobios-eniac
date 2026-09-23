@@ -4,3 +4,14 @@ import { AppComponent } from './app/app.component';
 
 bootstrapApplication(AppComponent, appConfig)
   .catch((err) => console.error(err));
+
+
+function Validador(){ 
+    const loginTry = {
+     login : document.getElementById('login'),
+     senha : document.getElementById('senha')
+    }
+
+    console.log(loginTry);
+
+}
