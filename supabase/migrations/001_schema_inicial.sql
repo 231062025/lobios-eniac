@@ -1,19 +1,11 @@
--- ========================================================
--- Banco 1 — Núcleo de RH (Supabase / PostgreSQL)
--- Plataforma de Gestão de Carreira — Lobios
--- ========================================================
-
--- Ativa a geração automática de UUIDs
 create extension if not exists "pgcrypto";
 
--- SETORES
 create table setores (
   id uuid primary key default gen_random_uuid(),
   nome text not null,
-  responsavel_id uuid  -- FK para usuarios, criada mais abaixo (referência circular)
+  responsavel_id uuid 
 );
 
--- CARGOS
 create table cargos (
   id uuid primary key default gen_random_uuid(),
   nome text not null,
@@ -21,7 +13,6 @@ create table cargos (
   nivel text
 );
 
--- USUARIOS
 create table usuarios (
   id uuid primary key default gen_random_uuid(),
   nome text not null,
@@ -34,11 +25,9 @@ create table usuarios (
   criado_em timestamp default now()
 );
 
--- Agora que USUARIOS existe, cria a FK pendente em SETORES
 alter table setores
   add constraint fk_setor_responsavel foreign key (responsavel_id) references usuarios(id);
 
--- METAS
 create table metas (
   id uuid primary key default gen_random_uuid(),
   usuario_id uuid not null references usuarios(id),
@@ -48,29 +37,26 @@ create table metas (
   status text default 'em_andamento'
 );
 
--- AVALIACOES DE DESEMPENHO
 create table avaliacoes (
   id uuid primary key default gen_random_uuid(),
   usuario_id uuid not null references usuarios(id),
   avaliador_id uuid not null references usuarios(id),
-  metodo text,        -- ex: 'horas', 'chamados', 'projetos'
-  periodo text,        -- ex: '2026-T1'
+  metodo text,        
+  periodo text,      
   pontuacao numeric,
   comentarios text,
   criado_em timestamp default now()
 );
 
--- FEEDBACKS
 create table feedbacks (
   id uuid primary key default gen_random_uuid(),
   usuario_id uuid not null references usuarios(id),
   autor_id uuid not null references usuarios(id),
-  tipo text,           -- ex: 'elogio', 'melhoria'
+  tipo text,           
   texto text,
   data timestamp default now()
 );
 
--- PLANO DE CARREIRA
 create table plano_carreira (
   id uuid primary key default gen_random_uuid(),
   usuario_id uuid not null references usuarios(id),
@@ -79,13 +65,12 @@ create table plano_carreira (
   requisitos text
 );
 
--- FÉRIAS
 create table ferias (
   id uuid primary key default gen_random_uuid(),
   usuario_id uuid not null references usuarios(id),
   data_inicio date not null,
   data_fim date not null,
-  status text default 'solicitado',  -- solicitado, aprovado, negado
+  status text default 'solicitado', 
   aprovador_id uuid references usuarios(id),
   criado_em timestamp default now()
 );
