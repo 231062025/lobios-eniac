@@ -1,0 +1,42 @@
+rules_version = '2';
+
+// ========================================================
+// Banco 2 — Conteúdo & Documentos (Firebase / Firestore)
+// Plataforma de Gestão de Carreira — Lobios
+// ========================================================
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Catálogo de treinamentos: todo usuário logado pode ler,
+    // mas só o backend/console pode criar ou editar treinamentos.
+    match /treinamentos/{treinamentoId} {
+      allow read: if request.auth != null;
+      allow write: if false;
+    }
+
+    // Progresso de treinamento: cada usuário só vê e edita o próprio progresso.
+    match /progresso_treinamentos/{docId} {
+      allow read, update, delete: if request.auth != null
+        && request.auth.uid == resource.data.usuario_id;
+      allow create: if request.auth != null
+        && request.auth.uid == request.resource.data.usuario_id;
+    }
+
+    // Ponto: cada usuário só vê e registra o próprio ponto.
+    match /ponto/{docId} {
+      allow read, update, delete: if request.auth != null
+        && request.auth.uid == resource.data.usuario_id;
+      allow create: if request.auth != null
+        && request.auth.uid == request.resource.data.usuario_id;
+    }
+
+    // Documentos anexados: mesma regra — só o dono acessa.
+    match /documentos/{docId} {
+      allow read, update, delete: if request.auth != null
+        && request.auth.uid == resource.data.usuario_id;
+      allow create: if request.auth != null
+        && request.auth.uid == request.resource.data.usuario_id;
+    }
+  }
+}
