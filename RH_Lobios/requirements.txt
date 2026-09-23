@@ -1,1 +1,15 @@
-Node Version: 10.8.1
+Lista de versões do sistema que é necessario para rodar
+
+Angular CLI: 20.3.5
+Node: 22.13.0
+Package Manager: npm 10.8.1
+OS: win32 x64
+
+Package                      Version
+------------------------------------
+@angular-devkit/architect    0.2003.5
+@angular-devkit/core         20.3.5
+@angular-devkit/schematics   20.3.5
+@angular/cli                 20.3.5
+@schematics/angular          20.3.5
+typescript                   6.0.3
