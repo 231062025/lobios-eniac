@@ -1,24 +1,13 @@
 from typing import List
 from fastapi import APIRouter, Depends, HTTPException, status
-from pydantic import ConfigDict
 from sqlalchemy.orm import Session
-from pydantic import BaseModel, ConfigDict
-from uuid import UUID
 
-from src.main.validators.user_register_validator import UserRegisterValidator
+
+from src.main.validators.user_register_validator import UserRegisterValidator,UserResponse,UserUpdateValidator
 from src.main.server import server
 from src.main.models.models import UserDB
 
 users_routes = APIRouter(tags=["Usuario"])
-
-# Pydantic Response Model (Herda do validador e adiciona o id como string/uuid)
-class UserResponse(BaseModel): # Mude para herdar de BaseModel diretamente
-    id: UUID                   # Use UUID diretamente em vez de str
-    nome: str
-    email: str
-    # Não coloque 'username' aqui se ele não existe na tabela do banco
-    
-    model_config = ConfigDict(from_attributes=True)
 
 # [C]REATE - Criar e salvar novo usuário
 @users_routes.post("/users", status_code=status.HTTP_201_CREATED, response_model=UserResponse)
@@ -31,10 +20,9 @@ def create_user(body: UserRegisterValidator, db: Session = Depends(server.get_db
     # 2. Cria a instância do modelo do banco usando os dados validados pelo Pydantic
     new_user = UserDB(**body.model_dump())
     
-    # 3. Salva no banco de dados do Supabase
     db.add(new_user)
     db.commit()
-    db.refresh(new_user)  # Atualiza a variável com o ID gerado pelo banco
+    db.refresh(new_user)
     
     return new_user
 
@@ -54,16 +42,41 @@ def read_user(user_id: str, db: Session = Depends(server.get_db)):
 
 # [U]PDATE - Atualizar um usuário
 @users_routes.put("/users/{user_id}", response_model=UserResponse)
-def update_user(user_id: str, user_atualizado: UserRegisterValidator, db: Session = Depends(server.get_db)):
+def update_user(user_id: str, user_atualizado: UserUpdateValidator, db: Session = Depends(server.get_db)):
     user_db = db.query(UserDB).filter(UserDB.id == user_id).first()
     if user_db is None:
         raise HTTPException(status_code=404, detail="Usuário não encontrado.")
+    if user_atualizado.nome is not None:
+        user_db.nome = user_atualizado.nome
+        
+    if user_atualizado.email is not None:
+        user_db.email = user_atualizado.email
+        
+    if user_atualizado.username is not None:
+        user_db.username = user_atualizado.username
+        
+    if user_atualizado.cargo is not None:
+        user_db.cargo = user_atualizado.cargo
+        
+    if user_atualizado.tipo_perfil is not None:
+        user_db.tipo_perfil = user_atualizado.tipo_perfil
+        
+    if user_atualizado.cargo_id is not None:
+        user_db.cargo_id = user_atualizado.cargo_id
+        
+    if user_atualizado.setor_id is not None:
+        user_db.setor_id = user_atualizado.setor_id
+        
+    if user_atualizado.gestor_id is not None:
+        user_db.gestor_id = user_atualizado.gestor_id
     
-    # Atualiza os campos conforme seu model
-    UserDB.email = user_atualizado.email
-    
-    db.commit()
-    db.refresh(user_db)
+    try:
+        db.commit()
+        db.refresh(user_db)
+    except Exception as e:
+        db.rollback() # Desfaz a operação em caso de erro no banco
+        raise HTTPException(status_code=500, detail=f"Erro ao guardar: {str(e)}")
+
     return user_db
 
 # [D]ELETE - Deletar um usuário (Corrigido o status__code para status_code)
