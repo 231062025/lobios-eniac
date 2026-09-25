@@ -24,5 +24,20 @@ class UserResponse(BaseModel):
     id: UUID                   
     nome: str
     email: str
+    username: str
+    nome: str
+    email: EmailStr
+    cargo: str
+    id: UUID
+    tipo_perfil: str
+    cargo_id: UUID
+    setor_id: str
+    gestor_id: str
+    data_admissao:str
+    criado_em: str
     
     model_config = ConfigDict(from_attributes=True)
+    
+class UserLoginValidator(BaseModel):
+    email: EmailStr
+    senha: str

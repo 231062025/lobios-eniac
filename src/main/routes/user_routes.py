@@ -3,7 +3,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
 
-from src.main.validators.user_register_validator import UserRegisterValidator,UserResponse,UserUpdateValidator
+from src.main.validators.user_register_validator import UserRegisterValidator,UserResponse,UserUpdateValidator,UserLoginValidator
 from src.main.server import server
 from src.main.models.models import UserDB
 
@@ -25,6 +25,20 @@ def create_user(body: UserRegisterValidator, db: Session = Depends(server.get_db
     db.refresh(new_user)
     
     return new_user
+
+@users_routes.post("/login", response_model=UserResponse)
+def login_user(body: UserLoginValidator, db: Session = Depends(server.get_db)):
+    # 1. Procura o utilizador pelo e-mail
+    user_db = db.query(UserDB).filter(UserDB.email == body.email).first()
+
+    # 2. Verifica se o utilizador existe e se a senha está correta
+    if not user_db or user_db.senha != body.senha:
+        # Retorna Erro 401 (Unauthorized) se falhar
+        raise HTTPException(status_code=401, detail="E-mail ou senha incorretos.")
+
+    # 3. Se passou no IF acima, o login está certo! 
+    # Retorna o objeto inteiro e o FastAPI formata usando o UserResponse
+    return user_db
 
 # [R]EAD - Listar usuários com paginação
 @users_routes.get("/users/", response_model=List[UserResponse])

@@ -11,11 +11,11 @@ class Setor(Base):
     nome = Column(Text, nullable=False)
     responsavel_id = Column(UUID(as_uuid=True), ForeignKey("usuarios.id"), nullable=True)
 
-class Cargo(Base):
+class Cargos(Base):
     __tablename__ = "cargos"
     
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    nome = Column(Text, nullable=False)
+    cargo = Column(Text, nullable=False)
     setor_id = Column(UUID(as_uuid=True), ForeignKey("setores.id"), nullable=False)
     nivel = Column(Text)  # junior, pleno, senior
 
@@ -25,6 +25,7 @@ class UserDB(Base):
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     nome = Column(Text, nullable=False)
     email = Column(Text, unique=True, nullable=False)
+    senha = Column(Text, nullable=False)
     tipo_perfil = Column(Text)  # colaborador, gestor, rh
     cargo_id = Column(UUID(as_uuid=True), ForeignKey("cargos.id"), nullable=True)
     setor_id = Column(UUID(as_uuid=True), ForeignKey("setores.id"), nullable=True)
