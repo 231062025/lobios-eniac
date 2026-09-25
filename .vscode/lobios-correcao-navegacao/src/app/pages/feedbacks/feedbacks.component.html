@@ -1,0 +1,22 @@
+<div class="card" style="max-width: 600px;">
+  <h3>Feedback e Alinhamento</h3>
+  <!-- preventDefault evita que o formulário recarregue a página inteira -->
+  <form (submit)="$event.preventDefault()">
+    <div class="form-group">
+      <label for="subordinado">Subordinado Alvo:</label>
+      <select id="subordinado">
+        <option>Mariana Costa</option>
+        <option>Carlos Souza</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="feedback-text">Parecer de Orientação:</label>
+      <textarea id="feedback-text" rows="3" placeholder="Insira o feedback construtivo ou metas para correção de desvios operacionais..."></textarea>
+    </div>
+    <div class="form-group">
+      <label for="anexo-plano">Anexar Caderno de Metas Adicionais (PDF):</label>
+      <input type="file" id="anexo-plano" accept="application/pdf">
+    </div>
+    <button type="submit" class="btn" style="width: 100%;">Registrar Feedback</button>
+  </form>
+</div>

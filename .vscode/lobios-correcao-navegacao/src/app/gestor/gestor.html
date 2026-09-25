@@ -1,0 +1,25 @@
+<div class="app-container">
+  <!-- Menu Lateral -->
+  <aside>
+    <h1>Lobios - Gestão</h1>
+    <nav>
+      <ul>
+        <li><a routerLink="/equipe-desempenho" routerLinkActive="active">Equipe & Desempenho</a></li>
+        <li><a routerLink="/validacao-escalas" routerLinkActive="active">Validações de Escalas</a></li>
+        <li><a routerLink="/feedbacks" routerLinkActive="active">Feedbacks e Atas</a></li>
+        <li><a routerLink="/organograma" routerLinkActive="active">Organograma</a></li>
+      </ul>
+    </nav>
+  </aside>
+
+  <!-- Conteúdo Principal -->
+  <main>
+    <header>
+      <h2>Painel da Diretoria Administrativa</h2>
+      <p>Gestor Responsável: Diretor Marcos Antônio</p>
+    </header>
+
+    <!-- A tela escolhida no menu aparece aqui -->
+    <router-outlet />
+  </main>
+</div>

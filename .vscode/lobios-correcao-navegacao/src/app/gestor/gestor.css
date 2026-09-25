@@ -1,0 +1,67 @@
+/* Ocupa a tela inteira, ignorando o layout centralizado da tela de login (styles.css) */
+:host {
+  display: block;
+  position: fixed;
+  inset: 0;
+  overflow: auto;
+  background: var(--bg-light);
+}
+
+.app-container {
+  display: flex;
+  min-height: 100%;
+}
+
+aside {
+  width: 250px;
+  flex-shrink: 0;
+  background: #0d1b2a;
+  color: #fff;
+  padding: 1.5rem 1rem;
+}
+
+aside h1 {
+  font-size: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+aside ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+aside a {
+  display: block;
+  padding: 0.65rem 0.9rem;
+  border-radius: var(--radius);
+  color: #cfd8e3;
+  text-decoration: none;
+  transition: background 0.15s;
+}
+
+aside a:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+}
+
+aside a.active {
+  background: var(--primary-color);
+  color: #fff;
+  font-weight: 600;
+}
+
+main {
+  flex: 1;
+  padding: 1.5rem 2rem;
+  min-width: 0;
+}
+
+header {
+  margin-bottom: 1.5rem;
+}
+
+header p {
+  color: var(--text-muted);
+}

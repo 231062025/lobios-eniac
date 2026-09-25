@@ -1,0 +1,45 @@
+<div class="card">
+  <h3>Métricas de Avaliação de Desempenho da Equipe</h3>
+
+  <div class="form-group" style="max-width: 300px;">
+    <label for="metric-select"><strong>Selecione a Métrica Analítica:</strong></label>
+    <select id="metric-select">
+      <option value="projetos">Projetos Entregues (%)</option>
+      <option value="horas">Horas Trabalhadas (Banco de Horas)</option>
+      <option value="chamados">Chamados Resolvidos (Suporte/Processos)</option>
+    </select>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Servidor</th>
+        <th>Indicador Atual</th>
+        <th>Meta Estipulada</th>
+        <th>Progresso Relativo</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Mariana Costa (Analista)</td>
+        <td>14 Projetos</td>
+        <td>15 Projetos</td>
+        <td>
+          <div class="progress-bar-container">
+            <div class="progress-bar" style="width: 93%;"></div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>Carlos Souza (Técnico)</td>
+        <td>8 Projetos</td>
+        <td>12 Projetos</td>
+        <td>
+          <div class="progress-bar-container">
+            <div class="progress-bar" style="width: 66%; background: var(--warning-color);"></div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
