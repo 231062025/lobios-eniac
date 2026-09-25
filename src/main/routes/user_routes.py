@@ -1,6 +1,7 @@
 from typing import List
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
+from src.main.server.supabase_admin import supabase_admin
 
 
 from src.main.validators.user_register_validator import UserRegisterValidator,UserResponse,UserUpdateValidator
@@ -9,22 +10,27 @@ from src.main.models.models import UserDB
 
 users_routes = APIRouter(tags=["Usuario"])
 
-# [C]REATE - Criar e salvar novo usuário
+# [C]REATE - Criar usuário no Supabase Auth (o trigger cria a linha em `usuarios` sozinho)
 @users_routes.post("/users", status_code=status.HTTP_201_CREATED, response_model=UserResponse)
 def create_user(body: UserRegisterValidator, db: Session = Depends(server.get_db)):
-    # 1. Verifica se o e-mail já existe no banco
     existing_user = db.query(UserDB).filter(UserDB.email == body.email).first()
     if existing_user:
         raise HTTPException(status_code=400, detail="E-mail já cadastrado.")
-    
-    # 2. Cria a instância do modelo do banco usando os dados validados pelo Pydantic
-    new_user = UserDB(**body.model_dump())
-    
-    db.add(new_user)
-    db.commit()
-    db.refresh(new_user)
-    
-    return new_user
+
+    try:
+        resposta = supabase_admin.auth.admin.invite_user_by_email(
+            body.email,
+            options={"data": {"nome": body.nome, "tipo_perfil": "colaborador"}}
+        )
+    except Exception as erro:
+        raise HTTPException(status_code=400, detail=f"Erro ao criar usuário no Auth: {erro}")
+
+    novo_id = resposta.user.id
+    usuario_db = db.query(UserDB).filter(UserDB.id == novo_id).first()
+    if usuario_db is None:
+        raise HTTPException(status_code=500, detail="Trigger não gerou a linha em usuarios ainda.")
+
+    return usuario_db
 
 # [R]EAD - Listar usuários com paginação
 @users_routes.get("/users/", response_model=List[UserResponse])
@@ -82,10 +88,10 @@ def update_user(user_id: str, user_atualizado: UserUpdateValidator, db: Session 
 # [D]ELETE - Deletar um usuário (Corrigido o status__code para status_code)
 @users_routes.delete("/users/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_user(user_id: str, db: Session = Depends(server.get_db)):
-    UserDB = db.query(UserDB).filter(UserDB.id == user_id).first()
-    if UserDB is None:
+    usuario = db.query(UserDB).filter(UserDB.id == user_id).first()
+    if usuario is None:
         raise HTTPException(status_code=404, detail="Usuário não encontrado.")
-    
-    db.delete(UserDB)
+    db.delete(usuario)
     db.commit()
+    return None
     return None
