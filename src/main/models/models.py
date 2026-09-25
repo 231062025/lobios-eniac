@@ -51,3 +51,44 @@ class Ferias(Base):
     data_fim = Column(Date)
     status = Column(Text)  # solicitado, aprovado, negado
     aprovador_id = Column(UUID(as_uuid=True), ForeignKey("usuarios.id"), nullable=True)
+
+from sqlalchemy import Column, String, Date, DateTime, Numeric, Text, ForeignKey
+from sqlalchemy.dialects.postgresql import UUID
+import uuid
+
+class Avaliacao(Base):
+    __tablename__ = "avaliacoes"
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    usuario_id = Column(UUID(as_uuid=True), nullable=False)
+    avaliador_id = Column(UUID(as_uuid=True), nullable=False)
+    metodo = Column(Text)
+    periodo = Column(Text)
+    pontuacao = Column(Numeric)
+    comentarios = Column(Text)
+    criado_em = Column(DateTime)
+
+class Feedback(Base):
+    __tablename__ = "feedbacks"
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    usuario_id = Column(UUID(as_uuid=True), nullable=False)
+    autor_id = Column(UUID(as_uuid=True), nullable=False)
+    tipo = Column(Text)
+    texto = Column(Text)
+    data = Column(DateTime)
+
+class PlanoCarreira(Base):
+    __tablename__ = "plano_carreira"
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    usuario_id = Column(UUID(as_uuid=True), nullable=False)
+    cargo_objetivo_id = Column(UUID(as_uuid=True), nullable=True)
+    previsao = Column(Date)
+    requisitos = Column(Text)
+
+class CriteriosAvaliacao(Base):
+    __tablename__ = "criterios_avaliacao"
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    cargo_id = Column(UUID(as_uuid=True), nullable=True)
+    metodo = Column(Text, nullable=False)
+    peso = Column(Numeric, default=1)
+    descricao = Column(Text)
+    criado_em = Column(DateTime)
