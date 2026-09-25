@@ -33,7 +33,21 @@ def get_db():
         db.close()
 
 from src.main.routes.user_routes import users_routes
+from src.main.routes.cargo_routes import cargos_routes
+from src.main.routes.setor_routes import setores_routes
+from src.main.routes.meta_routes import metas_routes
+from src.main.routes.ferias_routes import ferias_routes
+from src.main.routes.avaliacao_routes import avaliacoes_routes
+from src.main.routes.feedback_routes import feedbacks_routes
+from src.main.routes.plano_carreira_routes import plano_carreira_routes
+from src.main.routes.criterio_routes import criterios_routes
 
 app.include_router(users_routes)
-from src.main.routes.cargo_routes import cargos_routes
 app.include_router(cargos_routes)
+app.include_router(setores_routes)
+app.include_router(metas_routes)
+app.include_router(ferias_routes)
+app.include_router(avaliacoes_routes)
+app.include_router(feedbacks_routes)
+app.include_router(plano_carreira_routes)
+app.include_router(criterios_routes)
