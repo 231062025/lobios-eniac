@@ -35,4 +35,5 @@ def get_db():
 from src.main.routes.user_routes import users_routes
 
 app.include_router(users_routes)
-
+from src.main.routes.cargo_routes import cargos_routes
+app.include_router(cargos_routes)
