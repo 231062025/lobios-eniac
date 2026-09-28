@@ -11,7 +11,15 @@ export class AuthService {
     constructor(private http: HttpClient) { }
 
     fazerLogin(dados: dadosLogin): Observable<any> {
-        return this.http.post('https://lobios-api.onrender.com/docs#/', dados);
+        return import { createClient } from '@supabase/supabase-js';
+
+const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+async login(email: string, senha: string) {
+  const { data, error } = await supabase.auth.signInWithPassword({ email, password: senha });
+  if (error) throw error;
+  return data;
+}
     }
 }
 
