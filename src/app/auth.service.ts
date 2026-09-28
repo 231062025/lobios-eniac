@@ -15,8 +15,8 @@ export class AuthService {
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-async login(email: string, senha: string) {
-  const { data, error } = await supabase.auth.signInWithPassword({ email, password: senha });
+async login(email: string, password: string) {
+  const { data, error } = await supabase.auth.signInWithPassword({ email, password }); 
   if (error) throw error;
   return data;
 }
