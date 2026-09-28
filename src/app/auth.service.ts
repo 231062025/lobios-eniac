@@ -11,7 +11,7 @@ export class AuthService {
     constructor(private http: HttpClient) { }
 
     fazerLogin(dados: dadosLogin): Observable<any> {
-        return this.http.post('https://localhost:3001/login', dados);
+        return this.http.post('https://lobios-api.onrender.com/docs#/', dados);
     }
 }
 
