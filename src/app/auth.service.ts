@@ -1,25 +1,25 @@
 import { Injectable } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
-import { Observable } from "rxjs";
-import { dadosLogin } from "./app" 
+import { Observable, from } from "rxjs";
+import { createClient } from "@supabase/supabase-js";
+import { dadosLogin } from "./app";
+import { environment } from "../environments/environment";
 
+// Cliente do Supabase — criado uma vez, fora da classe
+const supabase = createClient(environment.supabaseUrl, environment.supabaseAnonKey);
 
 @Injectable({
     providedIn: 'root'
 })
 export class AuthService {
-    constructor(private http: HttpClient) { }
 
     fazerLogin(dados: dadosLogin): Observable<any> {
-        return import { createClient } from '@supabase/supabase-js';
+        // signInWithPassword devolve uma Promise; from() converte pra Observable,
+        // mantendo o mesmo tipo de retorno que o resto do app já espera
+        const resultado = supabase.auth.signInWithPassword({
+            email: dados.login,
+            password: dados.senha
+        });
 
-const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-async login(email: string, password: string) {
-  const { data, error } = await supabase.auth.signInWithPassword({ email, password }); 
-  if (error) throw error;
-  return data;
-}
+        return from(resultado);
     }
 }
-
