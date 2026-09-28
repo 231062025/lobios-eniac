@@ -13,12 +13,21 @@ const supabase = createClient(environment.supabaseUrl, environment.supabaseAnonK
 export class AuthService {
 
     fazerLogin(dados: dadosLogin): Observable<any> {
-        // signInWithPassword devolve uma Promise; from() converte pra Observable,
-        // mantendo o mesmo tipo de retorno que o resto do app já espera
         const resultado = supabase.auth.signInWithPassword({
             email: dados.login,
             password: dados.senha
         });
+
+        return from(resultado);
+    }
+
+    // Busca o tipo_perfil do usuário logado, pra decidir pra onde navegar
+    buscarPerfil(userId: string): Observable<any> {
+        const resultado = supabase
+            .from('usuarios')
+            .select('tipo_perfil')
+            .eq('id', userId)
+            .single();
 
         return from(resultado);
     }
