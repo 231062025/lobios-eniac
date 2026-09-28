@@ -66,7 +66,7 @@ export class App {
                 break;
               case 'colaborador':
               default:
-                this.router.navigate(['/colaborador']);
+                this.router.navigate(['/funcionario']);
                 break;
             }
           },
