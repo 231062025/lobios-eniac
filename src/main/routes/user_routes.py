@@ -10,7 +10,7 @@ from src.main.models.models import UserDB
 
 users_routes = APIRouter(tags=["Usuario"])
 
-# [C]REATE - Criar usuário no Supabase Auth (o trigger cria a linha em `usuarios` sozinho)
+# [C]REATE - Cria com senha direta (testes) ou por convite por e-mail (fluxo real)
 @users_routes.post("/users", status_code=status.HTTP_201_CREATED, response_model=UserResponse)
 def create_user(body: UserRegisterValidator, db: Session = Depends(server.get_db)):
     existing_user = db.query(UserDB).filter(UserDB.email == body.email).first()
@@ -18,10 +18,18 @@ def create_user(body: UserRegisterValidator, db: Session = Depends(server.get_db
         raise HTTPException(status_code=400, detail="E-mail já cadastrado.")
 
     try:
-        resposta = supabase_admin.auth.admin.invite_user_by_email(
-            body.email,
-            options={"data": {"nome": body.nome, "tipo_perfil": "colaborador"}}
-        )
+        if body.senha:
+            resposta = supabase_admin.auth.admin.create_user({
+                "email": body.email,
+                "password": body.senha,
+                "email_confirm": True,
+                "user_metadata": {"nome": body.nome, "tipo_perfil": "colaborador"}
+            })
+        else:
+            resposta = supabase_admin.auth.admin.invite_user_by_email(
+                body.email,
+                options={"data": {"nome": body.nome, "tipo_perfil": "colaborador"}}
+            )
     except Exception as erro:
         raise HTTPException(status_code=400, detail=f"Erro ao criar usuário no Auth: {erro}")
 
