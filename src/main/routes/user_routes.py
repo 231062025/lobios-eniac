@@ -58,12 +58,6 @@ def update_user(user_id: str, user_atualizado: UserUpdateValidator, db: Session 
     if user_atualizado.email is not None:
         user_db.email = user_atualizado.email
         
-    if user_atualizado.username is not None:
-        user_db.username = user_atualizado.username
-        
-    if user_atualizado.cargo is not None:
-        user_db.cargo = user_atualizado.cargo
-        
     if user_atualizado.tipo_perfil is not None:
         user_db.tipo_perfil = user_atualizado.tipo_perfil
         
