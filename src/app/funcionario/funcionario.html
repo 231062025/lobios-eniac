@@ -1,0 +1,140 @@
+<div class="app-container">
+    <aside>
+      <h1>Lobios</h1>
+      <nav>
+        <ul>
+          <li><a href="#" class="active">Painel Principal</a></li>
+          <li><a href="#">Minhas Férias</a></li>
+          <li><a href="#">Capacitações</a></li>
+          <li><a href="#">Registro de Ponto</a></li>
+        </ul>
+      </nav>
+    </aside>
+  
+    <main>
+      <header>
+        <h2>Bem-vindo, Servidor {{ nomeServidor() }}</h2>
+        <p>{{ secretaria() }}</p>
+      </header>
+  
+      <div class="dashboard-grid">
+        <!-- Metas Pessoais & Carreira -->
+        <div class="card">
+          <h3>Metas Pessoais & Carreira</h3>
+          <p><strong>Cargo Atual:</strong> {{ cargoAtual() }}</p>
+          
+          <div class="form-group" style="margin-top: 1rem;">
+            <label>Meta Trimestral: Conclusão de Relatórios de Impacto Ambiental</label>
+            <div class="progress-bar-container">
+              <div class="progress-bar" style="width: 75%;"></div>
+            </div>
+            <small class="text-muted">75% Concluído (Prazo: 30 dias)</small>
+          </div>
+  
+          <div class="form-group">
+            <label>Próxima Progressão Funcional (Nível III)</label>
+            <div class="progress-bar-container">
+              <div class="progress-bar secondary-bg" style="width: 40%;"></div>
+            </div>
+            <small class="text-muted">Faltam 12 meses de interstício e 1 curso de extensão.</small>
+          </div>
+        </div>
+  
+        <!-- Solicitação de Férias -->
+        <div class="card">
+          <h3>Solicitação de Férias</h3>
+          <p style="margin-bottom: 1rem;">
+            <strong>Saldo Disponível:</strong> 
+            <span class="badge badge-success">{{ saldoFerias() }} Dias</span>
+          </p>
+          
+          <form [formGroup]="feriasForm" (ngSubmit)="solicitarFerias()">
+            <div class="form-group">
+              <label for="dias-ferias">Dias a Usufruir:</label>
+              <input 
+                type="number" 
+                id="dias-ferias" 
+                formControlName="diasFerias"
+                class="form-control" 
+                [max]="saldoFerias()" 
+                min="5" 
+                placeholder="Ex: 15">
+            </div>
+  
+            <div class="form-group">
+              <label for="comprovante">Anexar Comprovante de Escala:</label>
+              <input 
+                type="file" 
+                id="comprovante" 
+                class="form-control"
+                (change)="onFileChange($event)">
+            </div>
+  
+            <button type="submit" class="btn" [disabled]="feriasForm.invalid">
+              Solicitar Gozo de Férias
+            </button>
+          </form>
+        </div>
+  
+        <!-- Treinamentos Recomendados -->
+        <div class="card">
+          <h3>Treinamentos Recomendados</h3>
+          <p class="text-muted small-text" style="margin-bottom: 1rem;">
+            Indicações geradas de acordo com as lacunas da sua última Avaliação de Desempenho.
+          </p>
+  
+          <table style="font-size: 0.9rem;">
+            <thead>
+              <tr>
+                <th>Curso</th>
+                <th>Carga Horária</th>
+                <th>Ação</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (curso of treinamentos(); track curso.id) {
+                <tr>
+                  <td>{{ curso.nome }}</td>
+                  <td>{{ curso.cargaHoraria }}</td>
+                  <td>
+                    <button 
+                      class="btn btn-success btn-sm" 
+                      [disabled]="curso.matriculado"
+                      (click)="matricularCurso(curso.id)">
+                      {{ curso.matriculado ? 'Matriculado' : 'Matricular' }}
+                    </button>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+  
+        <!-- Controle de Ponto Coletivo -->
+        <div class="card">
+          <h3>Controle de Ponto Coletivo</h3>
+          <p>
+            Status de Hoje: 
+            @if (pontoBatido()) {
+              <span class="badge badge-success">Ponto Batido</span>
+            } @else {
+              <span class="badge badge-warning">Aguardando Registro</span>
+            }
+          </p>
+  
+          <div style="margin: 1rem 0; display: flex; gap: 0.5rem;">
+            <button class="btn flex-1" (click)="registrarPonto('entrada')">Registrar Entrada</button>
+            <button class="btn btn-danger flex-1" (click)="registrarPonto('saida')">Registrar Saída</button>
+          </div>
+  
+          <div style="border-top: 1px solid var(--border-color); padding-top: 1rem;">
+            <label style="font-weight: 600; font-size: 0.9rem; display: block; margin-bottom: 0.5rem;">
+              Justificar Ausência / Enviar Atestado:
+            </label>
+            <input type="file" class="form-control" style="margin-bottom: 0.5rem;" (change)="onFileChange($event)">
+            <button class="btn btn-muted w-100">Enviar Documento Médico</button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
