@@ -1,0 +1,173 @@
+/* Ocupa a tela inteira, ignorando o layout centralizado do body (styles.css) */
+:host {
+  display: block;
+  position: fixed;
+  inset: 0;
+  overflow: auto;
+  background: var(--bg-light);
+}
+
+.app-container {
+  display: flex;
+  min-height: 100%;
+}
+
+/* ---------- Menu lateral ---------- */
+aside {
+  width: 250px;
+  flex-shrink: 0;
+  background: #0d1b2a;
+  color: #fff;
+  padding: 1.5rem 1rem;
+}
+
+aside h1 {
+  font-size: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+aside ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.menu-item {
+  display: block;
+  width: 100%;
+  padding: 0.65rem 0.9rem;
+  border: none;
+  border-radius: var(--radius);
+  background: transparent;
+  color: #cfd8e3;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.menu-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+}
+
+.menu-item.active {
+  background: var(--primary-color);
+  color: #fff;
+  font-weight: 600;
+}
+
+.menu-item:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+
+/* ---------- Conteúdo ---------- */
+main {
+  flex: 1;
+  padding: 1.5rem 2rem;
+  min-width: 0;
+}
+
+header {
+  margin-bottom: 1.5rem;
+}
+
+header p {
+  color: var(--text-muted);
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.25rem;
+}
+
+.card--2 { grid-column: span 2; }
+.card--3 { grid-column: span 3; }
+
+.descricao {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin-bottom: 1rem;
+}
+
+.tabela-setores { font-size: 0.9rem; }
+.btn-novo { margin-top: 1rem; }
+
+/* ---------- Alertas de férias ---------- */
+.alerta {
+  padding: 0.75rem;
+  border-left: 4px solid;
+  border-radius: var(--radius);
+}
+
+.alerta + .alerta { margin-top: 0.75rem; }
+
+.alerta p { font-size: 0.85rem; }
+
+.alerta__titulo {
+  font-weight: bold;
+  font-size: 0.9rem !important;
+}
+
+.alerta__detalhe { color: var(--text-muted); }
+
+.alerta--critico {
+  background: #fff5f5;
+  border-left-color: var(--danger-color);
+}
+.alerta--critico .alerta__titulo { color: var(--danger-color); }
+
+.alerta--preventivo {
+  background: #fffaf0;
+  border-left-color: var(--warning-color);
+}
+.alerta--preventivo .alerta__titulo { color: #a86a00; }
+
+/* ---------- Matriz de treinamentos ---------- */
+.treinamentos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+.treinamento {
+  border: 1px solid var(--border-color);
+  padding: 1rem;
+  border-radius: var(--radius);
+}
+
+.treinamento__metrica {
+  padding-bottom: 0.5rem;
+  margin-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.treinamento__rotulo {
+  font-size: 0.85rem;
+  margin-bottom: 0.5rem;
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.25rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.badge-warning {
+  background: #fff3cd;
+  color: #7a5b00;
+}
+
+/* ---------- Telas menores ---------- */
+@media (max-width: 900px) {
+  .app-container { flex-direction: column; }
+  aside { width: auto; }
+  main { padding: 1rem; }
+  .dashboard-grid { grid-template-columns: 1fr; }
+  .card--2, .card--3 { grid-column: auto; }
+}

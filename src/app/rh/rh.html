@@ -1,0 +1,96 @@
+<div class="app-container">
+  <!-- Menu Lateral -->
+  <aside>
+    <h1>SisGov - RH Central</h1>
+    <nav>
+      <ul>
+        <li>
+          <button type="button" class="menu-item" [class.active]="secaoAtiva() === 'estrutura'"
+                  (click)="irPara('estrutura', secEstrutura)">Estrutura de Cargos</button>
+        </li>
+        <li>
+          <button type="button" class="menu-item" [class.active]="secaoAtiva() === 'competencias'"
+                  (click)="irPara('competencias', secCompetencias)">Matriz de Competências</button>
+        </li>
+        <li>
+          <button type="button" class="menu-item" [class.active]="secaoAtiva() === 'alertas'"
+                  (click)="irPara('alertas', secAlertas)">Alertas Legais</button>
+        </li>
+      </ul>
+    </nav>
+  </aside>
+
+  <!-- Conteúdo Principal -->
+  <main>
+    <header>
+      <h2>Supervisão Estratégica de Recursos Humanos</h2>
+      <p>Governo do Estado - Secretaria de Administração</p>
+    </header>
+
+    <div class="dashboard-grid">
+
+      <!-- Estrutura de Cargos -->
+      <section class="card card--2" #secEstrutura>
+        <h3>Edição Global de Setores, Cargos e Responsáveis</h3>
+        <p class="descricao">
+          Gerencie os nós organizacionais e vincule os ordenadores de despesas e chefias de setores.
+        </p>
+        <table class="tabela-setores">
+          <thead>
+            <tr>
+              <th>Setor Estratégico</th>
+              <th>Cargo de Chefia</th>
+              <th>Servidor Responsável</th>
+              <th>Ações de Remanejamento</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (setor of setores; track setor.nome) {
+              <tr>
+                <td>{{ setor.nome }}</td>
+                <td>{{ setor.cargo }}</td>
+                <td>{{ setor.responsavel }}</td>
+                <td>
+                  <button type="button" class="btn btn-sm">Editar Vínculo</button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+        <button type="button" class="btn btn-success btn-novo">+ Cadastrar Novo Setor Estatutário</button>
+      </section>
+
+      <!-- Alertas de Passivos -->
+      <section class="card" #secAlertas>
+        <h3>Alertas de Passivos (Férias Vencidas)</h3>
+        @for (alerta of alertas; track alerta.matricula) {
+          <div class="alerta" [class.alerta--critico]="alerta.nivel === 'critico'"
+               [class.alerta--preventivo]="alerta.nivel === 'preventivo'">
+            <p class="alerta__titulo">{{ alerta.titulo }}</p>
+            <p><strong>{{ alerta.rotulo }}:</strong> {{ alerta.servidor }} (Matrícula #{{ alerta.matricula }})</p>
+            <p class="alerta__detalhe">{{ alerta.detalhe }}</p>
+          </div>
+        }
+      </section>
+
+      <!-- Matriz de Competências -->
+      <section class="card card--3" #secCompetencias>
+        <h3>Vínculos de Desempenho & Matriz Crítica de Treinamentos</h3>
+        <p class="descricao">
+          Defina quais cursos públicos serão oferecidos compulsoriamente como ação corretiva para
+          insuficiências registradas em avaliações de desempenho.
+        </p>
+        <div class="treinamentos">
+          @for (t of treinamentos; track t.metrica) {
+            <div class="treinamento">
+              <h5 class="treinamento__metrica">Métrica: {{ t.metrica }}</h5>
+              <p class="treinamento__rotulo"><strong>Curso Automatizado Vinculado:</strong></p>
+              <span class="badge badge-warning">{{ t.curso }}</span>
+            </div>
+          }
+        </div>
+      </section>
+
+    </div>
+  </main>
+</div>
