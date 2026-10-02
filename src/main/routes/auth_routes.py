@@ -3,7 +3,8 @@ import json
 
 import firebase_admin
 from firebase_admin import auth as fb_auth, credentials
-from fastapi import APIRouter, Header, HTTPException
+from fastapi import APIRouter, Depends, HTTPException
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 
 from src.main.server.supabase_admin import supabase_admin
 
@@ -15,11 +16,14 @@ if not firebase_admin._apps:
 
 router = APIRouter(prefix="/auth", tags=["Auth"])
 
+# Lê o header "Authorization: Bearer <token>" e cria o botão Authorize no Swagger
+bearer = HTTPBearer()
+
 
 @router.post("/firebase-token")
-def firebase_token(authorization: str = Header(...)):
+def firebase_token(credenciais: HTTPAuthorizationCredentials = Depends(bearer)):
     """Recebe o token do Supabase e devolve um custom token do Firebase."""
-    jwt = authorization.removeprefix("Bearer ").strip()
+    jwt = credenciais.credentials
 
     # 1) Confere com o Supabase se a sessão é válida
     try:
@@ -34,5 +38,6 @@ def firebase_token(authorization: str = Header(...)):
     linhas = supabase_admin.table("usuarios").select("tipo_perfil").eq("id", uid).execute().data
     perfil = linhas[0]["tipo_perfil"] if linhas else "colaborador"
 
+    # 3) Gera o token do Firebase com o mesmo UID e o perfil
     token = fb_auth.create_custom_token(uid, {"perfil": perfil})
     return {"token": token.decode()}
