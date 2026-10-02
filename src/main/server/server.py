@@ -41,6 +41,7 @@ from src.main.routes.avaliacao_routes import avaliacoes_routes
 from src.main.routes.feedback_routes import feedbacks_routes
 from src.main.routes.plano_carreira_routes import plano_carreira_routes
 from src.main.routes.criterio_routes import criterios_routes
+from src.main.routes.user_routes import router as user_router
 
 app.include_router(users_routes)
 app.include_router(cargos_routes)
@@ -51,3 +52,4 @@ app.include_router(avaliacoes_routes)
 app.include_router(feedbacks_routes)
 app.include_router(plano_carreira_routes)
 app.include_router(criterios_routes)
+app.include_router(user_router)
