@@ -1,0 +1,113 @@
+<header>
+  <h2>Setores e cargos</h2>
+  <p class="texto-muted">Monte a estrutura da empresa: primeiro os setores, depois os cargos de cada um.</p>
+</header>
+
+@if (cadastros.carregando()) {
+  <app-carregando />
+} @else {
+  <div class="dashboard-grid">
+    <section class="card">
+      <div class="cabecalho-card">
+        <h3>Setores</h3>
+        <button class="btn btn-success btn-sm" (click)="novoSetor()" [disabled]="editandoSetor() !== null">Novo setor</button>
+      </div>
+      <div class="tabela-rolagem">
+        <table>
+          <thead><tr><th>Setor</th><th>Responsável</th><th>Cargos</th><th></th></tr></thead>
+          <tbody>
+            @if (editandoSetor() === 'novo') { <ng-container *ngTemplateOutlet="linhaSetor" /> }
+            @for (s of cadastros.setores(); track s.id) {
+              @if (editandoSetor() === s.id) {
+                <ng-container *ngTemplateOutlet="linhaSetor" />
+              } @else {
+                <tr>
+                  <td>{{ s.nome }}</td>
+                  <td>{{ cadastros.nomeUsuario(s.responsavel_id) }}</td>
+                  <td>{{ cadastros.cargosDoSetor(s.id).length }}</td>
+                  <td class="acoes">
+                    <button class="btn btn-sm" (click)="editarSetor(s)" [disabled]="editandoSetor() !== null">Editar</button>
+                    <button class="btn btn-danger btn-sm" (click)="excluirSetor(s)">Excluir</button>
+                  </td>
+                </tr>
+              }
+            } @empty {
+              <tr><td colspan="4" class="vazio">Nenhum setor. Comece criando um.</td></tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="card span-2">
+      <div class="cabecalho-card">
+        <h3>Cargos</h3>
+        <button class="btn btn-success btn-sm" (click)="novoCargo()" [disabled]="editandoCargo() !== null || !cadastros.setores().length">Novo cargo</button>
+      </div>
+      <div class="tabela-rolagem">
+        <table>
+          <thead><tr><th>Cargo</th><th>Setor</th><th>Nível</th><th></th></tr></thead>
+          <tbody>
+            @if (editandoCargo() === 'novo') { <ng-container *ngTemplateOutlet="linhaCargo" /> }
+            @for (c of cadastros.cargos(); track c.id) {
+              @if (editandoCargo() === c.id) {
+                <ng-container *ngTemplateOutlet="linhaCargo" />
+              } @else {
+                <tr>
+                  <td>{{ c.nome }}</td>
+                  <td>{{ cadastros.nomeSetor(c.setor_id) }}</td>
+                  <td>{{ c.nivel || '—' }}</td>
+                  <td class="acoes">
+                    <button class="btn btn-sm" (click)="editarCargo(c)" [disabled]="editandoCargo() !== null">Editar</button>
+                    <button class="btn btn-danger btn-sm" (click)="excluirCargo(c)">Excluir</button>
+                  </td>
+                </tr>
+              }
+            } @empty {
+              <tr><td colspan="4" class="vazio">Nenhum cargo cadastrado.</td></tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+}
+
+<ng-template #linhaSetor>
+  <tr class="linha-edicao">
+    <td><input class="form-control" [(ngModel)]="setor.nome" placeholder="Ex.: Recursos Humanos" aria-label="Nome do setor"></td>
+    <td>
+      <select [(ngModel)]="setor.responsavel_id" aria-label="Responsável">
+        <option value="">Sem responsável</option>
+        @for (u of cadastros.usuarios(); track u.id) { <option [value]="u.id">{{ u.nome }}</option> }
+      </select>
+    </td>
+    <td></td>
+    <td class="acoes">
+      <button class="btn btn-success btn-sm" (click)="salvarSetor()">Salvar</button>
+      <button class="btn btn-muted btn-sm" (click)="editandoSetor.set(null)">Cancelar</button>
+    </td>
+  </tr>
+</ng-template>
+
+<ng-template #linhaCargo>
+  <tr class="linha-edicao">
+    <td><input class="form-control" [(ngModel)]="cargo.nome" placeholder="Ex.: Analista de RH" aria-label="Nome do cargo"></td>
+    <td>
+      <select [(ngModel)]="cargo.setor_id" aria-label="Setor">
+        <option value="">Sem setor</option>
+        @for (s of cadastros.setores(); track s.id) { <option [value]="s.id">{{ s.nome }}</option> }
+      </select>
+    </td>
+    <td>
+      <select [(ngModel)]="cargo.nivel" aria-label="Nível">
+        <option value="">—</option>
+        @for (n of niveis; track n) { <option [value]="n">{{ n }}</option> }
+      </select>
+    </td>
+    <td class="acoes">
+      <button class="btn btn-success btn-sm" (click)="salvarCargo()">Salvar</button>
+      <button class="btn btn-muted btn-sm" (click)="editandoCargo.set(null)">Cancelar</button>
+    </td>
+  </tr>
+</ng-template>

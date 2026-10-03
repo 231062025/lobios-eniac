@@ -1,0 +1,48 @@
+<header>
+  <h2>Avaliações e feedbacks</h2>
+  <p class="texto-muted">O que seu gestor registrou sobre o seu trabalho.</p>
+</header>
+
+@if (carregando()) {
+  <app-carregando />
+} @else {
+  <div class="dashboard-grid">
+    <section class="card span-2">
+      <h3>Avaliações de desempenho</h3>
+      <div class="tabela-rolagem">
+        <table>
+          <thead><tr><th>Período</th><th>Método</th><th>Nota (0–10)</th><th>Avaliador</th><th>Comentários</th></tr></thead>
+          <tbody>
+            @for (a of avaliacoes(); track a.id) {
+              <tr>
+                <td>{{ a.periodo || '—' }}</td>
+                <td>{{ metodo(a.metodo) }}</td>
+                <td style="min-width: 140px;">
+                  <strong>{{ a.pontuacao ?? '—' }}</strong>
+                  <app-barra-progresso [valor]="percentual(a.pontuacao)" [cor]="cor(a.pontuacao)" />
+                </td>
+                <td>{{ cadastros.nomeUsuario(a.avaliador_id) }}</td>
+                <td>{{ a.comentarios || '—' }}</td>
+              </tr>
+            } @empty {
+              <tr><td colspan="5" class="vazio">Nenhuma avaliação registrada ainda.</td></tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="card">
+      <h3>Feedbacks recebidos</h3>
+      @for (f of feedbacks(); track f.id) {
+        <article class="feedback">
+          <app-status [valor]="f.tipo" />
+          <p>{{ f.texto }}</p>
+          <small class="texto-muted">{{ cadastros.nomeUsuario(f.autor_id) }}</small>
+        </article>
+      } @empty {
+        <p class="vazio">Nenhum feedback ainda.</p>
+      }
+    </section>
+  </div>
+}

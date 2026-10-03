@@ -1,0 +1,89 @@
+<header>
+  <h2>Treinamentos</h2>
+  <p class="texto-muted">Acompanhe seus cursos e veja o que é recomendado a partir das suas avaliações.</p>
+</header>
+
+@if (!carregando() && !treinos.usandoFirestore()) {
+  <p class="aviso" role="note">Modo demonstração: matrículas e progresso ficam salvos só neste navegador.</p>
+}
+
+@if (carregando()) {
+  <app-carregando />
+} @else {
+  <div class="dashboard-grid">
+    <section class="card span-2">
+      <div class="cabecalho-card">
+        <h3>Meus treinamentos</h3>
+        <span class="texto-muted">{{ horasConcluidas() }}h concluídas</span>
+      </div>
+      @for (m of meus(); track m.p.id) {
+        <article class="treino">
+          <div class="treino__topo">
+            <div>
+              <strong>{{ m.curso?.titulo ?? 'Treinamento removido do catálogo' }}</strong>
+              <small class="texto-muted bloco">{{ m.curso?.categoria }}{{ m.curso ? ' · ' + m.curso.cargaHoraria + 'h' : '' }}</small>
+            </div>
+            @if (m.p.status === 'concluido') {
+              <span class="badge badge-success">Concluído{{ m.p.dataConclusao ? ' em ' + (m.p.dataConclusao | date: 'dd/MM/yyyy') : '' }}</span>
+            } @else {
+              <span class="badge badge-info">{{ m.p.progresso }}%</span>
+            }
+          </div>
+          <app-barra-progresso [valor]="m.p.progresso" />
+          <div class="treino__acoes">
+            <label class="treino__slider">
+              <span class="sr-only">Progresso de {{ m.curso?.titulo }}</span>
+              <input type="range" min="0" max="100" step="10" [value]="m.p.progresso"
+                     [disabled]="salvando() === m.p.id" (change)="atualizar(m.p, $event)">
+            </label>
+            @if (m.curso?.videoUrl) {
+              <a class="btn btn-sm" [href]="m.curso!.videoUrl" target="_blank" rel="noopener">Assistir</a>
+            }
+          </div>
+        </article>
+      } @empty {
+        <p class="vazio">Você ainda não está matriculado em nenhum treinamento.</p>
+      }
+    </section>
+
+    <section class="card">
+      <h3>Recomendados para você</h3>
+      @for (r of recomendados(); track r.curso.id) {
+        <div class="recomendado">
+          <p><strong>{{ r.curso.titulo }}</strong> <small class="texto-muted">({{ r.curso.cargaHoraria }}h)</small></p>
+          <small class="texto-muted bloco">{{ r.motivo }}</small>
+          <button class="btn btn-success btn-sm" [disabled]="salvando() === r.curso.id" (click)="matricular(r.curso.id, r.curso.titulo)">Matricular</button>
+        </div>
+      } @empty {
+        <p class="vazio">Nenhuma recomendação no momento.</p>
+      }
+    </section>
+
+    <section class="card span-3">
+      <h3>Catálogo</h3>
+      <div class="tabela-rolagem">
+        <table>
+          <thead><tr><th>Curso</th><th>Categoria</th><th>Carga horária</th><th></th></tr></thead>
+          <tbody>
+            @for (c of treinos.catalogo(); track c.id) {
+              <tr>
+                <td>{{ c.titulo }}</td>
+                <td>{{ c.categoria || '—' }}</td>
+                <td>{{ c.cargaHoraria }}h</td>
+                <td>
+                  @if (matriculado(c.id)) {
+                    <span class="badge badge-success">Matriculado</span>
+                  } @else {
+                    <button class="btn btn-sm" [disabled]="salvando() === c.id" (click)="matricular(c.id, c.titulo)">Matricular</button>
+                  }
+                </td>
+              </tr>
+            } @empty {
+              <tr><td colspan="4" class="vazio">O RH ainda não cadastrou treinamentos.</td></tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+}

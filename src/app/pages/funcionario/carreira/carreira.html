@@ -1,0 +1,45 @@
+<header>
+  <h2>Plano de carreira</h2>
+  <p class="texto-muted">Seu próximo passo na empresa, definido com o RH.</p>
+</header>
+
+@if (carregando()) {
+  <app-carregando />
+} @else if (plano(); as p) {
+  <div class="dashboard-grid">
+    <section class="card">
+      <h3>Próximo cargo</h3>
+      <p class="destaque">{{ cadastros.nomeCargo(p.cargo_objetivo_id) }}</p>
+      <p class="texto-muted">Setor: {{ cadastros.nomeSetor(cadastros.cargo(p.cargo_objetivo_id)?.setor_id) }}</p>
+      @if (p.previsao) {
+        <p style="margin-top: 1rem;"><strong>Previsão:</strong> {{ p.previsao | dataBr }}
+          @if (diasAte(p.previsao) > 0) { <small class="texto-muted">(faltam {{ diasAte(p.previsao) }} dias)</small> }
+        </p>
+      }
+    </section>
+
+    <section class="card">
+      <h3>Requisitos</h3>
+      @if (requisitos().length) {
+        <ul class="lista-checagem">
+          @for (r of requisitos(); track $index) { <li>{{ r }}</li> }
+        </ul>
+      } @else {
+        <p class="vazio">Nenhum requisito descrito.</p>
+      }
+    </section>
+
+    <section class="card">
+      <h3>Como o cargo é avaliado</h3>
+      @for (c of criterios(); track c.id) {
+        <p><strong>{{ c.metodo }}</strong>, peso {{ c.peso ?? 1 }}<br><small class="texto-muted">{{ c.descricao }}</small></p>
+      } @empty {
+        <p class="vazio">O RH ainda não cadastrou critérios para este cargo.</p>
+      }
+    </section>
+  </div>
+} @else {
+  <section class="card">
+    <p class="vazio">Você ainda não tem um plano de carreira. Converse com o RH para definir o seu.</p>
+  </section>
+}

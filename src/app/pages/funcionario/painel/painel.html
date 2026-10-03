@@ -1,0 +1,57 @@
+<header>
+  <h2>Olá, {{ usuario()?.nome }}</h2>
+  <p class="texto-muted">Resumo das suas metas, férias e desenvolvimento.</p>
+</header>
+
+@if (carregando()) {
+  <app-carregando />
+} @else {
+  <div class="dashboard-grid">
+    <section class="card">
+      <h3>Minhas metas</h3>
+      <p><strong>{{ metasAbertas().length }}</strong> em aberto de {{ metas().length }}</p>
+      <app-barra-progresso [valor]="percentualMetas()" />
+      <small class="texto-muted">{{ percentualMetas() }}% concluídas</small>
+      <ul class="lista-simples">
+        @for (m of metasAbertas().slice(0, 3); track m.id) {
+          <li>{{ m.titulo }} <app-status [valor]="m.status" /></li>
+        }
+      </ul>
+      <a routerLink="metas" class="link">Ver todas as metas</a>
+    </section>
+
+    <section class="card">
+      <h3>Férias</h3>
+      @if (proximasFerias(); as f) {
+        <p>{{ f.data_inicio | dataBr }} a {{ f.data_fim | dataBr }}</p>
+        <app-status [valor]="f.status" />
+      } @else {
+        <p class="texto-muted">Nenhuma férias marcada.</p>
+      }
+      <p style="margin-top: 1rem;"><a routerLink="ferias" class="link">Solicitar ou acompanhar férias</a></p>
+    </section>
+
+    <section class="card">
+      <h3>Último feedback</h3>
+      @if (ultimoFeedback(); as fb) {
+        <app-status [valor]="fb.tipo" />
+        <p class="citacao">{{ fb.texto }}</p>
+        <small class="texto-muted">Por {{ cadastros.nomeUsuario(fb.autor_id) }}</small>
+      } @else {
+        <p class="texto-muted">Você ainda não recebeu feedbacks.</p>
+      }
+      <p style="margin-top: 1rem;"><a routerLink="desempenho" class="link">Ver avaliações e feedbacks</a></p>
+    </section>
+
+    <section class="card">
+      <h3>Plano de carreira</h3>
+      @if (plano(); as p) {
+        <p><strong>Cargo objetivo:</strong> {{ cadastros.nomeCargo(p.cargo_objetivo_id) }}</p>
+        <p><strong>Previsão:</strong> {{ p.previsao | dataBr }}</p>
+      } @else {
+        <p class="texto-muted">O RH ainda não definiu seu plano de carreira.</p>
+      }
+      <p style="margin-top: 1rem;"><a routerLink="carreira" class="link">Ver plano completo</a></p>
+    </section>
+  </div>
+}

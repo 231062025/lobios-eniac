@@ -1,0 +1,46 @@
+@if (modoDemo) {
+  <p class="aviso" role="note">
+    No modo demonstração não existe senha real. Preencha <code>supabaseAnonKey</code> em
+    <code>environment.ts</code> para usar o login e a troca de senha pelo Supabase.
+  </p>
+}
+
+<form (ngSubmit)="salvar()" autocomplete="on">
+  <div class="form-group">
+    <label for="senha-atual">{{ rotuloAtual() }}</label>
+    <input id="senha-atual" name="senhaAtual" class="form-control" autocomplete="current-password"
+           [type]="mostrar() ? 'text' : 'password'" [ngModel]="atual()" (ngModelChange)="atual.set($event)"
+           [disabled]="modoDemo" required>
+  </div>
+
+  <div class="form-group">
+    <label for="senha-nova">Nova senha</label>
+    <input id="senha-nova" name="senhaNova" class="form-control" autocomplete="new-password"
+           [type]="mostrar() ? 'text' : 'password'" [ngModel]="nova()" (ngModelChange)="nova.set($event)"
+           aria-describedby="regras-senha" [disabled]="modoDemo" required>
+    <ul id="regras-senha" class="regras-senha">
+      @for (r of regras(); track r.texto) {
+        <li [class.ok]="r.ok">{{ r.ok ? '✓' : '○' }} {{ r.texto }}</li>
+      }
+    </ul>
+  </div>
+
+  <div class="form-group">
+    <label for="senha-confirma">Confirme a nova senha</label>
+    <input id="senha-confirma" name="senhaConfirma" class="form-control" autocomplete="new-password"
+           [type]="mostrar() ? 'text' : 'password'" [ngModel]="confirmacao()" (ngModelChange)="confirmacao.set($event)"
+           [disabled]="modoDemo" required>
+    @if (confirmacao() && !confere()) { <small class="texto-alerta">As senhas não são iguais.</small> }
+  </div>
+
+  <label class="mostrar-senha">
+    <input type="checkbox" [checked]="mostrar()" (change)="mostrar.set(!mostrar())" [disabled]="modoDemo"> Mostrar senhas
+  </label>
+
+  @if (erro()) { <p class="texto-alerta" role="alert" style="margin-bottom: 1rem;">{{ erro() }}</p> }
+  @if (sucesso()) { <p class="texto-sucesso" role="status" style="margin-bottom: 1rem;">{{ sucesso() }}</p> }
+
+  <button type="submit" class="btn" [disabled]="modoDemo || salvando() || !valida()">
+    {{ salvando() ? 'Salvando…' : textoBotao() }}
+  </button>
+</form>

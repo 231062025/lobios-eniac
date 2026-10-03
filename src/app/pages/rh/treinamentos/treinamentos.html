@@ -1,0 +1,107 @@
+<header>
+  <h2>Matriz de treinamentos</h2>
+  <p class="texto-muted">Quando a nota de alguém num método fica abaixo do mínimo, os cursos ligados a ele são recomendados.</p>
+</header>
+
+@if (!carregando() && !treinos.usandoFirestore()) {
+  <p class="aviso" role="note">Modo demonstração: catálogo e regras ficam salvos só neste navegador.</p>
+}
+
+@if (carregando()) { <app-carregando /> } @else {
+
+<div class="dashboard-grid">
+  <section class="card span-2">
+    <div class="cabecalho-card">
+      <h3>Regras de recomendação</h3>
+      <button class="btn btn-success btn-sm" (click)="novaRegra()" [disabled]="editandoRegra() !== null || !treinos.catalogo().length">Nova regra</button>
+    </div>
+    <div class="matriz">
+      @for (r of treinos.matriz(); track r.id) {
+        <article class="matriz__item">
+          <h4>{{ rotulo(r.metodo) }}</h4>
+          <p class="texto-muted">Nota abaixo de {{ r.notaMinima }} recomenda:</p>
+          <ul class="lista-simples">
+            @for (id of r.cursoIds; track id) { <li>{{ treinos.curso(id)?.titulo ?? 'Curso removido' }}</li> }
+          </ul>
+          <div class="acoes">
+            <button class="btn btn-sm" (click)="editarRegra(r)">Editar</button>
+            <button class="btn btn-danger btn-sm" (click)="removerRegra(r)">Remover</button>
+          </div>
+        </article>
+      } @empty {
+        <p class="vazio">Nenhuma regra. Crie uma para começar a recomendar cursos.</p>
+      }
+    </div>
+
+    @if (editandoRegra(); as r) {
+      <form class="regra-form" (ngSubmit)="salvarRegra()">
+        <div class="form-linha">
+          <div class="form-group">
+            <label for="metodo">Método avaliado</label>
+            <select id="metodo" name="metodo" [(ngModel)]="r.metodo">
+              @for (m of metodos; track m.valor) { <option [value]="m.valor">{{ m.label }}</option> }
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="nota">Nota mínima</label>
+            <input id="nota" name="nota" type="number" min="0" max="10" step="0.5" class="form-control" [(ngModel)]="r.notaMinima">
+          </div>
+        </div>
+        <fieldset class="form-group escolha">
+          <legend>Cursos recomendados</legend>
+          @for (c of treinos.catalogo(); track c.id) {
+            <label><input type="checkbox" [checked]="r.cursoIds.includes(c.id)" (change)="alternarCurso(c.id)"> {{ c.titulo }}</label>
+          }
+        </fieldset>
+        <div class="acoes">
+          <button type="submit" class="btn" [disabled]="salvando()">Salvar regra</button>
+          <button type="button" class="btn btn-muted" (click)="editandoRegra.set(null)">Cancelar</button>
+        </div>
+      </form>
+    }
+  </section>
+
+  <section class="card">
+    <h3>Catálogo de cursos</h3>
+    <ul class="lista-simples">
+      @for (c of treinos.catalogo(); track c.id) {
+        <li>
+          <span>{{ c.titulo }} <small class="texto-muted">({{ c.cargaHoraria }}h{{ c.categoria ? ', ' + c.categoria : '' }})</small></span>
+          <button class="btn btn-danger btn-sm" (click)="removerCurso(c.id, c.titulo)" [attr.aria-label]="'Remover ' + c.titulo">Remover</button>
+        </li>
+      }
+    </ul>
+    <form (ngSubmit)="adicionarCurso()" style="margin-top: 1rem;">
+      <div class="form-group">
+        <label for="curso">Novo curso</label>
+        <input id="curso" name="curso" class="form-control" [(ngModel)]="novoCurso.titulo" placeholder="Nome do curso">
+      </div>
+      <div class="form-linha">
+        <div class="form-group">
+          <label for="ch">Carga horária (h)</label>
+          <input id="ch" name="ch" type="number" min="1" class="form-control" [(ngModel)]="novoCurso.cargaHoraria">
+        </div>
+        <div class="form-group">
+          <label for="categoria">Categoria</label>
+          <input id="categoria" name="categoria" class="form-control" list="categorias" placeholder="Ex.: soft skills" [(ngModel)]="novoCurso.categoria">
+          <datalist id="categorias">
+            <option value="soft skills"></option><option value="Ergonomia"></option><option value="técnico"></option><option value="gestão"></option>
+          </datalist>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="cargo-rel">Cargo relacionado</label>
+        <select id="cargo-rel" name="cargoRel" [(ngModel)]="novoCurso.cargoRelacionadoId">
+          <option value="">Todos os cargos</option>
+          @for (cg of cadastros.cargos(); track cg.id) { <option [value]="cg.id">{{ cadastros.nomeCargo(cg.id) }}</option> }
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="video">Link do vídeo (opcional)</label>
+        <input id="video" name="video" type="url" class="form-control" placeholder="https://" [(ngModel)]="novoCurso.videoUrl">
+      </div>
+      <button type="submit" class="btn" [disabled]="salvando()">Adicionar ao catálogo</button>
+    </form>
+  </section>
+</div>
+}

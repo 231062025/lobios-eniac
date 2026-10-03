@@ -1,0 +1,115 @@
+<div class="cena">
+  <!-- Fundo: degradê, textura e brilhos (como no modelo, em azul Lobios) -->
+  <div class="fundo-degrade"></div>
+  <div class="fundo-ruido"></div>
+  <div class="brilho brilho--topo"></div>
+  <div class="brilho brilho--topo-pulso"></div>
+  <div class="brilho brilho--base"></div>
+  <div class="brilho brilho--esq"></div>
+  <div class="brilho brilho--dir"></div>
+
+  <div class="palco">
+    <div class="inclinacao" (mousemove)="mover($event)" (mouseleave)="sair()"
+         [style.transform]="'rotateX(' + rotX() + 'deg) rotateY(' + rotY() + 'deg)'">
+
+      <!-- Feixes de luz percorrendo a borda -->
+      <div class="borda-luz" aria-hidden="true">
+        <span class="feixe feixe--topo"></span>
+        <span class="feixe feixe--dir"></span>
+        <span class="feixe feixe--base"></span>
+        <span class="feixe feixe--esq"></span>
+        <span class="canto canto--a"></span><span class="canto canto--b"></span>
+        <span class="canto canto--c"></span><span class="canto canto--d"></span>
+      </div>
+
+      <main class="cartao">
+        <div class="cartao__padrao" aria-hidden="true"></div>
+
+        <header class="cabecalho">
+          <div class="logo">
+            <svg viewBox="0 0 32 32" fill="none" aria-hidden="true">
+              <circle cx="8" cy="16" r="3" fill="currentColor"/>
+              <circle cx="22" cy="7" r="3" fill="currentColor"/>
+              <circle cx="22" cy="25" r="3" fill="currentColor"/>
+              <line x1="10.4" y1="14.7" x2="19.6" y2="8.3" stroke="currentColor" stroke-width="1.6"/>
+              <line x1="10.4" y1="17.3" x2="19.6" y2="23.7" stroke="currentColor" stroke-width="1.6"/>
+            </svg>
+          </div>
+          <h1>Bem-vindo ao Lobios</h1>
+          <p>Entre para acessar sua carreira, metas e férias</p>
+        </header>
+
+        <form (ngSubmit)="entrar()" autocomplete="on" novalidate>
+          <!-- E-mail -->
+          <div class="campo" [class.campo--foco]="focado() === 'email'">
+            <svg class="campo__icone" viewBox="0 0 24 24" aria-hidden="true">
+              <rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 5L2 7"/>
+            </svg>
+            <label class="sr-only" for="email">E-mail</label>
+            <input id="email" name="email" type="email" placeholder="E-mail" autocomplete="username"
+                   [(ngModel)]="email" (focus)="focado.set('email')" (blur)="focado.set(null)">
+          </div>
+
+          @if (modoDemo) {
+            <!-- Modo demonstração: escolhe o perfil em vez de digitar senha -->
+            <fieldset class="perfis">
+              <legend class="sr-only">Entrar como</legend>
+              @for (p of perfis; track p.valor) {
+                <label class="perfis__opcao" [class.perfis__opcao--ativa]="perfil === p.valor">
+                  <input type="radio" name="perfil" [value]="p.valor" [(ngModel)]="perfil">
+                  {{ p.label }}
+                </label>
+              }
+            </fieldset>
+          } @else {
+            <!-- Senha -->
+            <div class="campo" [class.campo--foco]="focado() === 'senha'">
+              <svg class="campo__icone" viewBox="0 0 24 24" aria-hidden="true">
+                <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+              </svg>
+              <label class="sr-only" for="senha">Senha</label>
+              <input id="senha" name="senha" placeholder="Senha" autocomplete="current-password"
+                     [type]="mostrarSenha() ? 'text' : 'password'" [(ngModel)]="senha"
+                     (focus)="focado.set('senha')" (blur)="focado.set(null)">
+              <button type="button" class="campo__olho" (click)="mostrarSenha.set(!mostrarSenha())"
+                      [attr.aria-label]="mostrarSenha() ? 'Ocultar senha' : 'Mostrar senha'" [attr.aria-pressed]="mostrarSenha()">
+                @if (mostrarSenha()) {
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg>
+                } @else {
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-.7-3.2M2 8a10.6 10.6 0 0 0 20 0M20 15l-1.7-2.4M4 15l1.7-2.4M9 18l.7-3.2"/></svg>
+                }
+              </button>
+            </div>
+          }
+
+          <div class="linha-extra">
+            @if (modoDemo) {
+              <span>Modo demonstração: a senha não é conferida.</span>
+            } @else {
+              <span>Esqueceu a senha? Fale com o RH.</span>
+            }
+          </div>
+
+          @if (erro()) {
+            <p class="erro" role="alert">{{ erro() }}</p>
+          }
+
+          <button type="submit" class="entrar" [disabled]="entrando()" [attr.aria-busy]="entrando()">
+            <span class="entrar__varredura" aria-hidden="true"></span>
+            @if (entrando()) {
+              <span class="spinner-login" aria-hidden="true"></span>
+              <span class="sr-only">Entrando…</span>
+            } @else {
+              <span class="entrar__texto">
+                Entrar
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </span>
+            }
+          </button>
+
+          <p class="rodape">Primeiro acesso? Use a senha provisória enviada pelo RH.</p>
+        </form>
+      </main>
+    </div>
+  </div>
+</div>

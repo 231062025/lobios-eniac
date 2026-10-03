@@ -1,0 +1,55 @@
+<header>
+  <h2>Aprovações de férias</h2>
+  <p class="texto-muted">Pedidos da sua equipe aguardando decisão.</p>
+</header>
+
+@if (carregando()) {
+  <app-carregando />
+} @else {
+  <div class="dashboard-grid">
+    <section class="card">
+      <h3>Aguardando ({{ pendentes().length }})</h3>
+      <div class="pilha">
+        @for (f of pendentes(); track f.id) {
+          <article class="pendencia">
+            <p><strong>{{ cadastros.nomeUsuario(f.usuario_id) }}</strong></p>
+            <p>{{ f.data_inicio | dataBr }} a {{ f.data_fim | dataBr }} ({{ diasEntre(f.data_inicio, f.data_fim) }} dias)</p>
+            @if (diasAte(f.data_inicio) <= 15) {
+              <small class="texto-alerta">Começa em {{ diasAte(f.data_inicio) }} dia(s)</small>
+            }
+            @if (conflitos(f).length) {
+              <small class="texto-alerta">Coincide com férias de {{ conflitos(f).join(', ') }}</small>
+            }
+            <div class="pendencia__acoes">
+              <button class="btn btn-success" [disabled]="decidindo() === f.id" (click)="decidir(f, 'aprovado')">Aprovar</button>
+              <button class="btn btn-danger" [disabled]="decidindo() === f.id" (click)="decidir(f, 'negado')">Negar</button>
+            </div>
+          </article>
+        } @empty {
+          <p class="vazio">Nenhum pedido aguardando aprovação.</p>
+        }
+      </div>
+    </section>
+
+    <section class="card span-2">
+      <h3>Histórico de decisões</h3>
+      <div class="tabela-rolagem">
+        <table>
+          <thead><tr><th>Pessoa</th><th>Período</th><th>Status</th><th>Decidido por</th></tr></thead>
+          <tbody>
+            @for (f of decididas(); track f.id) {
+              <tr>
+                <td>{{ cadastros.nomeUsuario(f.usuario_id) }}</td>
+                <td>{{ f.data_inicio | dataBr }} a {{ f.data_fim | dataBr }}</td>
+                <td><app-status [valor]="f.status" /></td>
+                <td>{{ cadastros.nomeUsuario(f.aprovador_id) }}</td>
+              </tr>
+            } @empty {
+              <tr><td colspan="4" class="vazio">Nenhuma decisão registrada.</td></tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+}
