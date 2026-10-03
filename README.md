@@ -1,4 +1,3 @@
-[README.md](https://github.com/user-attachments/files/32987857/README.md)
 <div align="center">
 
 # 🌐 Lobios · Plataforma de Gestão de Carreira
