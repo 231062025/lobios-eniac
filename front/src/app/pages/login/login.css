@@ -1,0 +1,137 @@
+/* Paleta derivada do --primary-color do Lobios (#1a365d) no lugar do roxo do modelo */
+:host {
+  --l-fundo: #050b16;
+  --l-azul: 59, 130, 246;     /* rgb do brilho */
+  --l-ciano: 125, 211, 252;
+  display: block;
+  width: 100%;
+}
+
+.cena {
+  position: relative; min-height: 100vh; width: 100%; overflow: hidden;
+  display: flex; align-items: center; justify-content: center; padding: 1.5rem;
+  background: var(--l-fundo); color: #fff;
+}
+
+/* ---------- Fundo ---------- */
+.fundo-degrade { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(26,54,93,.85), rgba(26,54,93,.55) 45%, var(--l-fundo)); }
+.fundo-ruido {
+  position: absolute; inset: 0; opacity: .04; mix-blend-mode: soft-light; background-size: 200px 200px;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+.brilho { position: absolute; pointer-events: none; }
+.brilho--topo { top: 0; left: 50%; transform: translateX(-50%); width: 120vh; height: 60vh; border-radius: 0 0 50% 50%; background: rgba(var(--l-azul), .2); filter: blur(80px); }
+.brilho--topo-pulso { top: 0; left: 50%; width: 100vh; height: 60vh; border-radius: 0 0 9999px 9999px; background: rgba(var(--l-ciano), .18); filter: blur(60px); animation: pulso-topo 8s ease-in-out infinite alternate; }
+.brilho--base { bottom: 0; left: 50%; width: 90vh; height: 90vh; border-radius: 9999px 9999px 0 0; background: rgba(var(--l-azul), .2); filter: blur(60px); animation: pulso-base 6s ease-in-out 1s infinite alternate; }
+.brilho--esq, .brilho--dir { width: 24rem; height: 24rem; border-radius: 50%; background: rgba(255,255,255,.05); filter: blur(100px); animation: piscar 2s ease-in-out infinite; }
+.brilho--esq { left: 25%; top: 25%; }
+.brilho--dir { right: 25%; bottom: 25%; animation-delay: 1s; }
+
+@keyframes pulso-topo { from { opacity: .15; transform: translateX(-50%) scale(.98); } to { opacity: .3; transform: translateX(-50%) scale(1.02); } }
+@keyframes pulso-base { from { opacity: .3; transform: translateX(-50%) scale(1); } to { opacity: .5; transform: translateX(-50%) scale(1.1); } }
+@keyframes piscar { 50% { opacity: .2; } }
+
+/* ---------- Cartão ---------- */
+.palco { position: relative; z-index: 1; width: 100%; max-width: 384px; perspective: 1500px; animation: surgir .8s ease-out both; }
+@keyframes surgir { from { opacity: 0; transform: translateY(20px); } }
+.inclinacao { position: relative; transition: transform .15s ease-out; transform-style: preserve-3d; }
+
+.cartao {
+  position: relative; overflow: hidden; padding: 1.5rem; border-radius: 1rem;
+  background: rgba(5, 11, 22, .45); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255,255,255,.06); box-shadow: 0 25px 50px -12px rgba(0,0,0,.6);
+}
+.cartao__padrao {
+  position: absolute; inset: 0; opacity: .03; background-size: 30px 30px; pointer-events: none;
+  background-image: linear-gradient(135deg, #fff .5px, transparent .5px), linear-gradient(45deg, #fff .5px, transparent .5px);
+}
+
+/* Feixes de luz que percorrem a borda */
+.borda-luz { position: absolute; inset: -1px; border-radius: 1rem; overflow: hidden; pointer-events: none; z-index: 2; }
+.feixe { position: absolute; opacity: .7; filter: blur(1.5px); }
+.feixe--topo, .feixe--base { height: 3px; width: 50%; background: linear-gradient(to right, transparent, #fff, transparent); }
+.feixe--dir, .feixe--esq { width: 3px; height: 50%; background: linear-gradient(to bottom, transparent, #fff, transparent); }
+.feixe--topo { top: 0; animation: correr-x 3.5s ease-in-out infinite; }
+.feixe--dir { right: 0; animation: correr-y 3.5s ease-in-out .6s infinite; }
+.feixe--base { bottom: 0; animation: correr-x-inv 3.5s ease-in-out 1.2s infinite; }
+.feixe--esq { left: 0; animation: correr-y-inv 3.5s ease-in-out 1.8s infinite; }
+@keyframes correr-x { 0% { left: -50%; opacity: .3; } 35% { opacity: .7; } 71%, 100% { left: 100%; opacity: .3; } }
+@keyframes correr-x-inv { 0% { right: -50%; opacity: .3; } 35% { opacity: .7; } 71%, 100% { right: 100%; opacity: .3; } }
+@keyframes correr-y { 0% { top: -50%; opacity: .3; } 35% { opacity: .7; } 71%, 100% { top: 100%; opacity: .3; } }
+@keyframes correr-y-inv { 0% { bottom: -50%; opacity: .3; } 35% { opacity: .7; } 71%, 100% { bottom: 100%; opacity: .3; } }
+.canto { position: absolute; border-radius: 50%; background: rgba(255,255,255,.5); filter: blur(1.5px); animation: piscar 2.2s ease-in-out infinite; }
+.canto--a { top: 0; left: 0; width: 5px; height: 5px; }
+.canto--b { top: 0; right: 0; width: 8px; height: 8px; animation-delay: .5s; }
+.canto--c { bottom: 0; right: 0; width: 8px; height: 8px; animation-delay: 1s; }
+.canto--d { bottom: 0; left: 0; width: 5px; height: 5px; animation-delay: 1.5s; }
+
+/* ---------- Cabeçalho ---------- */
+.cabecalho { position: relative; text-align: center; margin-bottom: 1.25rem; padding-bottom: 0; border-bottom: none; }
+.logo {
+  width: 2.75rem; height: 2.75rem; margin: 0 auto .6rem; border-radius: 50%; display: grid; place-items: center;
+  border: 1px solid rgba(255,255,255,.12); background: linear-gradient(135deg, rgba(255,255,255,.12), transparent);
+  color: #fff; animation: logo-entrar .8s cubic-bezier(.34,1.56,.64,1) both;
+}
+.logo svg { width: 22px; height: 22px; }
+@keyframes logo-entrar { from { transform: scale(.5); opacity: 0; } }
+.cabecalho h1 { font-size: 1.3rem; font-weight: 700; letter-spacing: .2px; animation: surgir .6s .2s ease-out both; }
+.cabecalho p { font-size: .8rem; color: rgba(255,255,255,.6); margin-top: .25rem; animation: surgir .6s .3s ease-out both; }
+
+/* ---------- Campos ---------- */
+form { position: relative; display: flex; flex-direction: column; gap: .75rem; }
+.campo { position: relative; display: flex; align-items: center; border-radius: .5rem; transition: transform .2s; }
+.campo:hover { transform: scale(1.01); }
+.campo--foco { transform: scale(1.02); z-index: 1; }
+.campo input {
+  width: 100%; height: 2.6rem; padding: 0 2.5rem; border-radius: .5rem; font-size: .9rem; color: #fff;
+  background: rgba(255,255,255,.05); border: 1px solid transparent; outline: none; transition: background .3s, border-color .3s, box-shadow .3s;
+}
+.campo input::placeholder { color: rgba(255,255,255,.35); }
+.campo input:focus { background: rgba(255,255,255,.1); border-color: rgba(255,255,255,.22); box-shadow: 0 0 0 3px rgba(var(--l-ciano), .15); }
+.campo svg { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.campo__icone { position: absolute; left: .8rem; width: 16px; height: 16px; color: rgba(255,255,255,.4); transition: color .3s; pointer-events: none; }
+.campo--foco .campo__icone { color: #fff; }
+.campo__olho { position: absolute; right: .55rem; display: grid; place-items: center; width: 28px; height: 28px; border: none; border-radius: 6px; background: none; color: rgba(255,255,255,.45); cursor: pointer; }
+.campo__olho:hover, .campo__olho:focus-visible { color: #fff; }
+.campo__olho svg { width: 16px; height: 16px; }
+
+/* Perfis no modo demonstração */
+.perfis { display: grid; grid-template-columns: repeat(3, 1fr); gap: .35rem; border: none; padding: .25rem; border-radius: .6rem; background: rgba(255,255,255,.05); }
+.perfis__opcao { position: relative; text-align: center; padding: .5rem .25rem; border-radius: .45rem; font-size: .8rem; color: rgba(255,255,255,.65); cursor: pointer; transition: background .2s, color .2s; }
+.perfis__opcao input { position: absolute; opacity: 0; inset: 0; cursor: pointer; }
+.perfis__opcao:hover { color: #fff; }
+.perfis__opcao--ativa { background: rgba(255,255,255,.14); color: #fff; font-weight: 600; }
+.perfis__opcao:has(input:focus-visible) { outline: 2px solid rgba(255,255,255,.7); outline-offset: 1px; }
+
+.linha-extra { font-size: .75rem; color: rgba(255,255,255,.55); padding-top: .15rem; }
+.erro { font-size: .8rem; color: #fecaca; background: rgba(220, 38, 38, .15); border: 1px solid rgba(248, 113, 113, .3); padding: .5rem .75rem; border-radius: .5rem; }
+
+/* ---------- Botão ---------- */
+.entrar {
+  position: relative; overflow: hidden; margin-top: .75rem; height: 2.6rem; border: none; border-radius: .5rem;
+  background: #fff; color: #0b1626; font-weight: 600; font-size: .9rem; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; transition: transform .2s, box-shadow .3s;
+}
+.entrar:hover:not(:disabled) { transform: scale(1.02); box-shadow: 0 0 24px rgba(255,255,255,.18); }
+.entrar:active:not(:disabled) { transform: scale(.98); }
+.entrar:disabled { cursor: wait; }
+.entrar:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+.entrar__texto { position: relative; display: inline-flex; align-items: center; gap: .3rem; }
+.entrar__texto svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; transition: transform .3s; }
+.entrar:hover .entrar__texto svg { transform: translateX(3px); }
+.entrar__varredura { position: absolute; inset: 0; opacity: 0; background: linear-gradient(to right, transparent, rgba(26,54,93,.18), transparent); }
+.entrar:disabled .entrar__varredura { opacity: 1; animation: varrer 1.5s ease-in-out infinite; }
+@keyframes varrer { from { transform: translateX(-100%); } to { transform: translateX(100%); } }
+.spinner-login { width: 16px; height: 16px; border: 2px solid rgba(11,22,38,.7); border-top-color: transparent; border-radius: 50%; animation: girar-login .8s linear infinite; }
+@keyframes girar-login { to { transform: rotate(360deg); } }
+
+.rodape { text-align: center; font-size: .75rem; color: rgba(255,255,255,.5); margin-top: .5rem; }
+
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+
+/* Acessibilidade: sem animações para quem pede menos movimento */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  .feixe { display: none; }
+}
+@media (max-width: 420px) { .cartao { padding: 1.25rem; } }

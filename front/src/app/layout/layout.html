@@ -1,0 +1,37 @@
+<div class="app-container">
+  <aside>
+    <h1>{{ marca() }}</h1>
+    <nav aria-label="Menu principal">
+      <ul>
+        @for (item of menu(); track item.rota) {
+          <li>
+            <a [routerLink]="item.rota" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+              {{ item.label }}
+            </a>
+          </li>
+        }
+      </ul>
+    </nav>
+    <div class="aside-rodape">
+      <p class="aside-usuario">{{ usuario()?.nome }}<small>{{ perfil() }}</small></p>
+      <button type="button" class="link-sair" (click)="sair()">Sair</button>
+    </div>
+  </aside>
+
+  <main>
+    @if (modoDemo()) {
+      <p class="aviso-demo">
+        Modo demonstração: o login não confere senha. Preencha <code>supabaseAnonKey</code> em
+        <code>src/environments/environment.ts</code> para usar o login real.
+      </p>
+    }
+    <!-- Menu compacto para telas pequenas (o aside some abaixo de 992px) -->
+    <nav class="menu-mobile" aria-label="Menu">
+      @for (item of menu(); track item.rota) {
+        <a [routerLink]="item.rota" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">{{ item.label }}</a>
+      }
+      <button type="button" class="link-sair" (click)="sair()">Sair</button>
+    </nav>
+    <router-outlet />
+  </main>
+</div>

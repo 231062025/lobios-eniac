@@ -1,0 +1,53 @@
+<header>
+  <h2>Equipe e desempenho</h2>
+  <p class="texto-muted">Acompanhe notas, metas e pedidos pendentes de cada pessoa.</p>
+</header>
+
+@if (carregando() || cadastros.carregando()) {
+  <app-carregando />
+} @else {
+  <div class="resumo">
+    <p><strong>{{ equipe().length }}</strong> pessoas na equipe</p>
+    <p><strong>{{ mediaEquipe() ?? '—' }}</strong> média em {{ rotuloMetodo() }}</p>
+    <p><a routerLink="aprovacoes" class="link"><strong>{{ totalPendencias() }}</strong> pedidos de férias aguardando</a></p>
+  </div>
+
+  <section class="card">
+    <div class="cabecalho-card">
+      <h3>Desempenho por método</h3>
+      <div class="form-group" style="max-width: 280px; margin: 0;">
+        <label for="metodo">Método de avaliação</label>
+        <select id="metodo" [ngModel]="metodo()" (ngModelChange)="metodo.set($event)">
+          @for (m of metodos; track m.valor) { <option [value]="m.valor">{{ m.label }}</option> }
+        </select>
+      </div>
+    </div>
+    <div class="tabela-rolagem">
+      <table>
+        <thead>
+          <tr><th>Pessoa</th><th>Última nota</th><th style="min-width: 160px;">Desempenho</th><th>Metas</th><th>Férias</th></tr>
+        </thead>
+        <tbody>
+          @for (l of linhas(); track l.membro.id) {
+            <tr>
+              <td>{{ l.membro.nome }}<br><small class="texto-muted">{{ l.membro.email }}</small></td>
+              <td>
+                @if (l.nota !== null) { <strong>{{ l.nota }}</strong><small class="texto-muted bloco">{{ l.periodo }}</small> }
+                @else { <small class="texto-muted">Sem avaliação</small> }
+              </td>
+              <td><app-barra-progresso [valor]="percentual(l.nota)" [cor]="cor(l.nota)" /></td>
+              <td>{{ l.metasConcluidas }} concluídas, {{ l.metasAbertas }} em aberto</td>
+              <td>
+                @if (l.feriasPendentes) { <span class="badge badge-warning">{{ l.feriasPendentes }} aguardando</span> }
+                @else { <small class="texto-muted">—</small> }
+              </td>
+            </tr>
+          } @empty {
+            <tr><td colspan="5" class="vazio">Nenhuma pessoa na equipe. O RH vincula colaboradores em "Colaboradores".</td></tr>
+          }
+        </tbody>
+      </table>
+    </div>
+    <p style="margin-top: 1rem;"><a routerLink="avaliacoes" class="link">Registrar nova avaliação</a></p>
+  </section>
+}

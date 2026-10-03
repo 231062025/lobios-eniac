@@ -1,0 +1,53 @@
+rules_version = '2';
+
+// Regras do Firestore do Lobios.
+// O login é feito no Supabase; a API (POST /auth/firebase-token) gera um custom token
+// em que request.auth.uid = UUID do Supabase e request.auth.token.perfil = colaborador | gestor | rh.
+// Cole este conteúdo em Firebase > Firestore Database > Regras e clique em Publicar.
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function logado()      { return request.auth != null; }
+    function perfil()      { return request.auth.token.perfil; }
+    function ehRh()        { return logado() && perfil() == 'rh'; }
+    function ehGestao()    { return logado() && perfil() in ['gestor', 'rh']; }
+    function ehDono()      { return logado() && request.auth.uid == resource.data.usuario_id; }
+    function criaParaSi()  { return logado() && request.auth.uid == request.resource.data.usuario_id; }
+
+    // Catálogo: todos leem, só o RH cadastra, edita e remove
+    match /treinamentos/{treinamentoId} {
+      allow read: if logado();
+      allow write: if ehRh();
+    }
+
+    // Regras de recomendação (método + nota mínima -> cursos)
+    match /matriz_treinamentos/{regraId} {
+      allow read: if logado();
+      allow write: if ehRh();
+    }
+
+    // Matrícula e progresso: a pessoa cuida do próprio; gestor e RH acompanham
+    match /progresso_treinamentos/{docId} {
+      allow read: if ehDono() || ehGestao();
+      allow create: if criaParaSi();
+      allow update: if ehDono() || ehRh();
+      allow delete: if ehDono() || ehRh();
+    }
+
+    // Ponto: a pessoa só cria os próprios registros e não pode editar nem apagar
+    // (só o RH corrige). Gestor e RH consultam.
+    match /ponto/{docId} {
+      allow read: if ehDono() || ehGestao();
+      allow create: if criaParaSi();
+      allow update, delete: if ehRh();
+    }
+
+    // Documentos (atestados, declarações): mesma lógica do ponto
+    match /documentos/{docId} {
+      allow read: if ehDono() || ehGestao();
+      allow create: if criaParaSi();
+      allow update, delete: if ehRh();
+    }
+  }
+}

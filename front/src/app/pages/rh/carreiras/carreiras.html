@@ -1,0 +1,75 @@
+<header>
+  <h2>Planos de carreira</h2>
+  <p class="texto-muted">Defina o próximo cargo de cada pessoa, a previsão e o que falta para chegar lá.</p>
+</header>
+
+<div class="dashboard-grid">
+  <section class="card span-2">
+    <div class="cabecalho-card">
+      <h3>Planos ({{ lista().length }})</h3>
+      <button class="btn btn-success btn-sm" (click)="novo()">Novo plano</button>
+    </div>
+    @if (carregando()) {
+      <app-carregando />
+    } @else {
+      <div class="tabela-rolagem">
+        <table>
+          <thead><tr><th>Pessoa</th><th>Cargo objetivo</th><th>Previsão</th><th>Requisitos</th><th></th></tr></thead>
+          <tbody>
+            @for (p of lista(); track p.id) {
+              <tr [class.selecionada]="editando() === p.id">
+                <td>{{ cadastros.nomeUsuario(p.usuario_id) }}</td>
+                <td>{{ cadastros.nomeCargo(p.cargo_objetivo_id) }}</td>
+                <td>{{ p.previsao | dataBr }}</td>
+                <td>{{ qtdRequisitos(p) }}</td>
+                <td class="acoes">
+                  <button class="btn btn-sm" (click)="editar(p)">Editar</button>
+                  <button class="btn btn-danger btn-sm" (click)="excluir(p)">Excluir</button>
+                </td>
+              </tr>
+            } @empty {
+              <tr><td colspan="5" class="vazio">Nenhum plano cadastrado.</td></tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  </section>
+
+  @if (editando()) {
+    <section class="card">
+      <h3>{{ editando() === 'novo' ? 'Novo plano' : 'Plano de ' + cadastros.nomeUsuario(rascunho.usuario_id) }}</h3>
+      <form (ngSubmit)="salvar()">
+        @if (editando() === 'novo') {
+          <div class="form-group">
+            <label for="pessoa">Pessoa</label>
+            <select id="pessoa" name="pessoa" [(ngModel)]="rascunho.usuario_id" required>
+              <option value="" disabled>Escolha…</option>
+              @for (u of semPlano(); track u.id) { <option [value]="u.id">{{ u.nome }}</option> }
+            </select>
+          </div>
+        }
+        <div class="form-group">
+          <label for="cargo">Cargo objetivo</label>
+          <select id="cargo" name="cargo" [(ngModel)]="rascunho.cargo_objetivo_id" required>
+            <option value="" disabled>Escolha…</option>
+            @for (c of cadastros.cargos(); track c.id) { <option [value]="c.id">{{ cadastros.nomeCargo(c.id) }}</option> }
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="previsao">Previsão</label>
+          <input id="previsao" name="previsao" type="date" class="form-control" [(ngModel)]="rascunho.previsao">
+        </div>
+        <div class="form-group">
+          <label for="requisitos">Requisitos <small class="texto-muted">(um por linha)</small></label>
+          <textarea id="requisitos" name="requisitos" rows="5" [(ngModel)]="rascunho.requisitos"
+                    placeholder="Concluir curso de gestão de projetos&#10;Nota mínima 8 em projetos por 2 trimestres"></textarea>
+        </div>
+        <div class="acoes">
+          <button type="submit" class="btn">Salvar plano</button>
+          <button type="button" class="btn btn-muted" (click)="editando.set(null)">Cancelar</button>
+        </div>
+      </form>
+    </section>
+  }
+</div>

@@ -1,0 +1,80 @@
+<header>
+  <h2>Critérios de avaliação</h2>
+  <p class="texto-muted">Defina como cada cargo é avaliado. O gestor vê esses critérios ao registrar uma avaliação.</p>
+</header>
+
+<div class="dashboard-grid">
+  <section class="card span-2">
+    <div class="cabecalho-card">
+      <h3>Critérios</h3>
+      <div class="acoes">
+        <select aria-label="Filtrar por cargo" style="max-width: 220px;" [ngModel]="filtroCargo()" (ngModelChange)="filtroCargo.set($event)">
+          <option value="">Todos os cargos</option>
+          @for (c of cadastros.cargos(); track c.id) { <option [value]="c.id">{{ cadastros.nomeCargo(c.id) }}</option> }
+        </select>
+        <button class="btn btn-success btn-sm" (click)="novo()">Novo critério</button>
+      </div>
+    </div>
+    @if (carregando()) {
+      <app-carregando />
+    } @else {
+      <div class="tabela-rolagem">
+        <table>
+          <thead><tr><th>Cargo</th><th>Método</th><th>Peso</th><th>Descrição</th><th></th></tr></thead>
+          <tbody>
+            @for (c of visiveis(); track c.id) {
+              <tr [class.selecionada]="editando() === c.id">
+                <td>{{ c.cargo_id ? cadastros.nomeCargo(c.cargo_id) : 'Todos os cargos' }}</td>
+                <td>{{ rotulo(c.metodo) }}</td>
+                <td>{{ c.peso ?? 1 }}</td>
+                <td>{{ c.descricao || '—' }}</td>
+                <td class="acoes">
+                  <button class="btn btn-sm" (click)="editar(c)">Editar</button>
+                  <button class="btn btn-danger btn-sm" (click)="excluir(c)">Excluir</button>
+                </td>
+              </tr>
+            } @empty {
+              <tr><td colspan="5" class="vazio">Nenhum critério. Exemplo: cargo Suporte, método Chamados resolvidos, peso 2.</td></tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  </section>
+
+  @if (editando()) {
+    <section class="card">
+      <h3>{{ editando() === 'novo' ? 'Novo critério' : 'Editar critério' }}</h3>
+      <form (ngSubmit)="salvar()">
+        <div class="form-group">
+          <label for="cargo">Cargo</label>
+          <select id="cargo" name="cargo" [(ngModel)]="rascunho.cargo_id">
+            <option value="">Todos os cargos</option>
+            @for (c of cadastros.cargos(); track c.id) { <option [value]="c.id">{{ cadastros.nomeCargo(c.id) }}</option> }
+          </select>
+        </div>
+        <div class="form-linha">
+          <div class="form-group">
+            <label for="metodo">Método</label>
+            <select id="metodo" name="metodo" [(ngModel)]="rascunho.metodo">
+              @for (m of metodos; track m.valor) { <option [value]="m.valor">{{ m.label }}</option> }
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="peso">Peso</label>
+            <input id="peso" name="peso" type="number" min="0.5" step="0.5" class="form-control" [(ngModel)]="rascunho.peso">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="descricao">Descrição</label>
+          <textarea id="descricao" name="descricao" rows="3" [(ngModel)]="rascunho.descricao"
+                    placeholder="Ex.: média de chamados fechados por semana, meta de 25"></textarea>
+        </div>
+        <div class="acoes">
+          <button type="submit" class="btn">Salvar critério</button>
+          <button type="button" class="btn btn-muted" (click)="editando.set(null)">Cancelar</button>
+        </div>
+      </form>
+    </section>
+  }
+</div>

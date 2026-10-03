@@ -1,0 +1,36 @@
+<header>
+  <h2>Organograma</h2>
+  <p class="texto-muted">Setores, responsáveis e cargos da empresa.</p>
+</header>
+
+@if (cadastros.carregando()) {
+  <app-carregando />
+} @else {
+  <div class="organograma">
+    @for (no of arvore(); track no.setor.id) {
+      <section class="org-setor">
+        <h3>{{ no.setor.nome }}</h3>
+        <p class="org-responsavel">
+          @if (no.responsavel; as r) { Responsável: <strong>{{ r.nome }}</strong> }
+          @else { <span class="texto-muted">Sem responsável definido</span> }
+        </p>
+        @for (c of no.cargos; track c.cargo.id) {
+          <div class="tree-node">
+            {{ c.cargo.nome }} @if (c.cargo.nivel) { <small class="texto-muted">{{ c.cargo.nivel }}</small> }
+            @for (p of c.pessoas; track p.id) { <div class="tree-node texto-muted">{{ p.nome }}</div> }
+          </div>
+        } @empty {
+          <p class="texto-muted tree-node">Nenhum cargo neste setor.</p>
+        }
+      </section>
+    } @empty {
+      <p class="vazio">Nenhum setor cadastrado. O RH cria setores em "Setores e cargos".</p>
+    }
+    @if (cargosSemSetor().length) {
+      <section class="org-setor org-setor--solto">
+        <h3>Cargos sem setor</h3>
+        @for (c of cargosSemSetor(); track c.id) { <div class="tree-node">{{ c.nome }}</div> }
+      </section>
+    }
+  </div>
+}

@@ -1,0 +1,56 @@
+from fastapi import FastAPI
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker, declarative_base
+from fastapi.middleware.cors import CORSMiddleware
+
+# 1. Inicializa o FastAPI
+app = FastAPI(title="API RH - Empresa", version="1.0")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+# ==========================================
+# CONFIGURAÇÃO DO BANCO DE DADOS (Supabase / PostgreSQL)
+# ==========================================
+SQLALCHEMY_DATABASE_URL= "postgresql://postgres.ocdyqvuufmgkcnbtopbn:lobios2026eniac@aws-0-us-east-1.pooler.supabase.com:6543/postgres"
+
+engine = create_engine(SQLALCHEMY_DATABASE_URL)
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
+# Base declarativa para os Models que você vai criar em outro arquivo
+Base = declarative_base()
+
+# Função de dependência para injetar a sessão nas rotas e garantir o fechamento
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+
+from src.main.routes.user_routes import users_routes
+from src.main.routes.cargo_routes import cargos_routes
+from src.main.routes.setor_routes import setores_routes
+from src.main.routes.meta_routes import metas_routes
+from src.main.routes.ferias_routes import ferias_routes
+from src.main.routes.avaliacao_routes import avaliacoes_routes
+from src.main.routes.feedback_routes import feedbacks_routes
+from src.main.routes.plano_carreira_routes import plano_carreira_routes
+from src.main.routes.criterio_routes import criterios_routes
+from src.main.routes.auth_routes import router as auth_router
+
+
+app.include_router(users_routes)
+app.include_router(cargos_routes)
+app.include_router(setores_routes)
+app.include_router(metas_routes)
+app.include_router(ferias_routes)
+app.include_router(avaliacoes_routes)
+app.include_router(feedbacks_routes)
+app.include_router(plano_carreira_routes)
+app.include_router(criterios_routes)
+app.include_router(auth_router)

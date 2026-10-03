@@ -1,0 +1,76 @@
+<header>
+  <h2>Férias da empresa</h2>
+  <p class="texto-muted">Acompanhe pedidos, ausências e quem ainda não tirou férias no ano.</p>
+</header>
+
+@if (carregando()) {
+  <app-carregando />
+} @else {
+  <div class="dashboard-grid">
+    <section class="card">
+      <h3>Alertas</h3>
+      @for (f of urgentes(); track f.id) {
+        <div class="alerta alerta--critico">
+          <p class="alerta__titulo">Pedido sem decisão perto do início</p>
+          <p>{{ cadastros.nomeUsuario(f.usuario_id) }}: começa em {{ diasAte(f.data_inicio) }} dia(s)</p>
+        </div>
+      }
+      @if (semFeriasNoAno().length) {
+        <div class="alerta alerta--preventivo">
+          <p class="alerta__titulo">{{ semFeriasNoAno().length }} pessoa(s) sem férias aprovadas este ano</p>
+          <p class="texto-muted">{{ nomesSemFerias() }}</p>
+        </div>
+      }
+      @if (!urgentes().length && !semFeriasNoAno().length) {
+        <p class="vazio">Nenhum alerta no momento.</p>
+      }
+    </section>
+
+    <section class="card">
+      <h3>De férias hoje ({{ ausentesHoje().length }})</h3>
+      <ul class="lista-simples">
+        @for (f of ausentesHoje(); track f.id) {
+          <li>{{ cadastros.nomeUsuario(f.usuario_id) }} <small class="texto-muted">volta {{ f.data_fim | dataBr }}</small></li>
+        } @empty {
+          <li class="texto-muted">Ninguém de férias hoje.</li>
+        }
+      </ul>
+    </section>
+
+    <section class="card span-3">
+      <div class="cabecalho-card">
+        <h3>Todos os pedidos</h3>
+        <select aria-label="Filtrar por status" style="max-width: 200px;" [ngModel]="filtroStatus()" (ngModelChange)="filtroStatus.set($event)">
+          <option value="">Todos</option>
+          <option value="solicitado">Aguardando</option>
+          <option value="aprovado">Aprovados</option>
+          <option value="negado">Negados</option>
+        </select>
+      </div>
+      <div class="tabela-rolagem">
+        <table>
+          <thead><tr><th>Pessoa</th><th>Período</th><th>Dias</th><th>Status</th><th>Decidido por</th><th></th></tr></thead>
+          <tbody>
+            @for (f of visiveis(); track f.id) {
+              <tr>
+                <td>{{ cadastros.nomeUsuario(f.usuario_id) }}</td>
+                <td>{{ f.data_inicio | dataBr }} a {{ f.data_fim | dataBr }}</td>
+                <td>{{ diasEntre(f.data_inicio, f.data_fim) }}</td>
+                <td><app-status [valor]="f.status" /></td>
+                <td>{{ f.aprovador_id ? cadastros.nomeUsuario(f.aprovador_id) : '—' }}</td>
+                <td class="acoes">
+                  @if (f.status === 'solicitado') {
+                    <button class="btn btn-success btn-sm" (click)="decidir(f, 'aprovado')">Aprovar</button>
+                    <button class="btn btn-danger btn-sm" (click)="decidir(f, 'negado')">Negar</button>
+                  }
+                </td>
+              </tr>
+            } @empty {
+              <tr><td colspan="6" class="vazio">Nenhum pedido com esse filtro.</td></tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+}

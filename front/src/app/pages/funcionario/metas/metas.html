@@ -1,0 +1,35 @@
+<header>
+  <h2>Minhas metas</h2>
+  <p class="texto-muted">Metas definidas pelo seu gestor. Atualize o status conforme avançar.</p>
+</header>
+
+<section class="card">
+  @if (carregando()) {
+    <app-carregando />
+  } @else {
+    <div class="tabela-rolagem">
+      <table>
+        <thead><tr><th>Meta</th><th>Prazo</th><th>Status</th><th>Atualizar</th></tr></thead>
+        <tbody>
+          @for (m of metas(); track m.id) {
+            <tr>
+              <td><strong>{{ m.titulo }}</strong>@if (m.descricao) {<br><small class="texto-muted">{{ m.descricao }}</small>}</td>
+              <td>{{ m.prazo | dataBr }}</td>
+              <td><app-status [valor]="m.status" /></td>
+              <td>
+                <select [ngModel]="m.status" (ngModelChange)="mudarStatus(m, $event)" [disabled]="salvandoId() === m.id"
+                        [attr.aria-label]="'Status de ' + m.titulo">
+                  <option value="em_andamento">Em andamento</option>
+                  <option value="concluida">Concluída</option>
+                  <option value="atrasada">Atrasada</option>
+                </select>
+              </td>
+            </tr>
+          } @empty {
+            <tr><td colspan="4" class="vazio">Nenhuma meta cadastrada para você ainda. Seu gestor cria as metas na área dele.</td></tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</section>
