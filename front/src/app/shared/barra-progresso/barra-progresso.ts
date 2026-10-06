@@ -11,5 +11,5 @@ import { Component, input } from '@angular/core';
 })
 export class BarraProgresso {
   readonly valor = input(0);
-  readonly cor = input('var(--accent-color)');
+  readonly cor = input('var(--primary-color)');
 }
