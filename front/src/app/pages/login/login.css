@@ -1,8 +1,8 @@
-/* Paleta derivada do --primary-color do Lobios (#1a365d) no lugar do roxo do modelo */
+/* Paleta derivada do --primary-color do Lobios (roxo #7c3aed) */
 :host {
-  --l-fundo: #050b16;
-  --l-azul: 59, 130, 246;     /* rgb do brilho */
-  --l-ciano: 125, 211, 252;
+  --l-fundo: #0b0a10;
+  --l-azul: 124, 58, 237;     /* rgb do brilho (roxo) */
+  --l-ciano: 167, 139, 250;
   display: block;
   width: 100%;
 }
@@ -14,7 +14,7 @@
 }
 
 /* ---------- Fundo ---------- */
-.fundo-degrade { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(26,54,93,.85), rgba(26,54,93,.55) 45%, var(--l-fundo)); }
+.fundo-degrade { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(76,29,149,.85), rgba(46,16,101,.55) 45%, var(--l-fundo)); }
 .fundo-ruido {
   position: absolute; inset: 0; opacity: .04; mix-blend-mode: soft-light; background-size: 200px 200px;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
@@ -38,7 +38,7 @@
 
 .cartao {
   position: relative; overflow: hidden; padding: 1.5rem; border-radius: 1rem;
-  background: rgba(5, 11, 22, .45); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+  background: rgba(11, 10, 16, .45); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
   border: 1px solid rgba(255,255,255,.06); box-shadow: 0 25px 50px -12px rgba(0,0,0,.6);
 }
 .cartao__padrao {
@@ -109,20 +109,20 @@ form { position: relative; display: flex; flex-direction: column; gap: .75rem; }
 /* ---------- Botão ---------- */
 .entrar {
   position: relative; overflow: hidden; margin-top: .75rem; height: 2.6rem; border: none; border-radius: .5rem;
-  background: #fff; color: #0b1626; font-weight: 600; font-size: .9rem; cursor: pointer;
+  background: #7c3aed; color: #fff; font-weight: 600; font-size: .9rem; cursor: pointer;
   display: flex; align-items: center; justify-content: center; transition: transform .2s, box-shadow .3s;
 }
-.entrar:hover:not(:disabled) { transform: scale(1.02); box-shadow: 0 0 24px rgba(255,255,255,.18); }
+.entrar:hover:not(:disabled) { transform: scale(1.02); box-shadow: 0 0 24px rgba(124,58,237,.45); }
 .entrar:active:not(:disabled) { transform: scale(.98); }
 .entrar:disabled { cursor: wait; }
 .entrar:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
 .entrar__texto { position: relative; display: inline-flex; align-items: center; gap: .3rem; }
 .entrar__texto svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; transition: transform .3s; }
 .entrar:hover .entrar__texto svg { transform: translateX(3px); }
-.entrar__varredura { position: absolute; inset: 0; opacity: 0; background: linear-gradient(to right, transparent, rgba(26,54,93,.18), transparent); }
+.entrar__varredura { position: absolute; inset: 0; opacity: 0; background: linear-gradient(to right, transparent, rgba(255,255,255,.22), transparent); }
 .entrar:disabled .entrar__varredura { opacity: 1; animation: varrer 1.5s ease-in-out infinite; }
 @keyframes varrer { from { transform: translateX(-100%); } to { transform: translateX(100%); } }
-.spinner-login { width: 16px; height: 16px; border: 2px solid rgba(11,22,38,.7); border-top-color: transparent; border-radius: 50%; animation: girar-login .8s linear infinite; }
+.spinner-login { width: 16px; height: 16px; border: 2px solid rgba(255,255,255,.8); border-top-color: transparent; border-radius: 50%; animation: girar-login .8s linear infinite; }
 @keyframes girar-login { to { transform: rotate(360deg); } }
 
 .rodape { text-align: center; font-size: .75rem; color: rgba(255,255,255,.5); margin-top: .5rem; }
